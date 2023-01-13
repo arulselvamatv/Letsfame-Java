@@ -14,27 +14,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.letsfame.bean.WebHooksResponse;
 import com.letsfame.repository.WebHooksResponseRepository;
-import com.razorpay.RazorpayClient;
+//import com.razorpay.RazorpayClient;
 
 @RestController()
 public class WebHooksRequestController {
 
-	
-	@Autowired
-	private RazorpayClient razorpayClient;
-	
+//	@Autowired
+//	private RazorpayClient razorpayClient;
+
 	@Autowired
 	private WebHooksResponseRepository webHooksResponseRepository;
-	
+
 	@PostMapping(path = "/payment/webhooks", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> plan(@RequestBody final WebHooksResponse webHooksResponse) {
 
 		JSONObject message = new JSONObject();
 		try {
-
-
 			webHooksResponseRepository.save(webHooksResponse);
-			
 
 		} catch (Exception e) {
 
@@ -45,7 +41,7 @@ public class WebHooksRequestController {
 		}
 		return new ResponseEntity<>(message.toString(), HttpStatus.OK);
 	}
-	
+
 	@GetMapping(path = "/FetchAllWebhooks", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> Allplans() {
 
@@ -65,5 +61,5 @@ public class WebHooksRequestController {
 		}
 		return new ResponseEntity<>(message.toString(), HttpStatus.OK);
 	}
-	
+
 }

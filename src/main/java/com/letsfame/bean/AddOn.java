@@ -1,24 +1,42 @@
 package com.letsfame.bean;
 
-import org.json.JSONObject;
+import java.util.ArrayList;
 
 public class AddOn {
-	private Item item;
 
-	public JSONObject toJsonObject() {
-		return item.toJsonObject();
+	public ArrayList<Item> items;
+
+	public ArrayList<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(ArrayList<Item> items) {
+		this.items = items;
 	}
 
 	@Override
 	public String toString() {
-		return "AddOn [item=" + item + "]";
+		return "AddOn [items=" + items + "]";
 	}
 
-	public Item getItem() {
-		return item;
-	}
-
-	public void setItem(Item item) {
-		this.item = item;
-	}
 }
+
+////public class AddOn {
+////	private Items items;
+////
+////	public Items getItems() {
+////		return items;
+////	}
+////
+////	public void setItems(Items items) {
+////		this.items = items;
+////	}
+////
+////	@Override
+////	public String toString() {
+////		return "AddOn [items=" + items + "]";
+////	}
+//
+////	public JSONObject toJsonObject() {
+////		return item.toJsonObject();
+////	}
