@@ -1,6 +1,5 @@
 package com.letsfame.bean;
 
-import org.json.JSONObject;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -57,32 +56,6 @@ public class PlanRequest {
 	@Override
 	public String toString() {
 		return "PlanRequest [amount=" + amount + ", period=" + period + ", interval=" + interval + "]";
-	}
-
-	public JSONObject toJsonObject() {
-		JSONObject planRequest = new JSONObject();
-
-		planRequest.put("amount", this.amount); // amount in the smallest currency unit
-
-		planRequest.put("period", this.period);// Default INR amount
-
-		planRequest.put("interval", this.interval);
-		
-		planRequest.put("id", this.id);
-
-		if (item != null) {
-			planRequest.put("item", this.item.toJsonObject());
-		}
-
-		return planRequest;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 }

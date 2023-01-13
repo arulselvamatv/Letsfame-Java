@@ -2,16 +2,18 @@ package com.letsfame.bean;
 
 import java.util.Date;
 import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 
 @Getter
 @Setter
@@ -121,7 +123,7 @@ public class SubscriptionRequest {
 			for (AddOn addOn : addons) {
 //				jsonarray.add(item.toJsonObject());
 				JSONObject itemObject = new JSONObject();
-				itemObject.put("item", addOn.toJsonObject());
+//				itemObject.put("item", addOn.toJsonObject());
 
 				jsonarray.put(itemObject);
 
