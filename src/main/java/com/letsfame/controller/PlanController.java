@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.letsfame.bean.PlanReq;
 import com.letsfame.repository.PlanRequestReository;
+import com.letsfame.response.ResponseHandler;
+import com.letsfame.service.PlanService;
 
 //import com.razorpay.Plan;
 //import com.razorpay.RazorpayClient;
 //import com.razorpay.RazorpayException;
 
 import io.swagger.annotations.ApiOperation;
+import lombok.NonNull;
 
 @RestController()
 public class PlanController {
@@ -25,10 +28,17 @@ public class PlanController {
 //	@Autowired
 //	private RazorpayClient razorpayClient;
 
+	private @NonNull ResponseHandler responseGenerator;
+	
+	@Autowired
+	private PlanService planservice;
+	
 	@Autowired
 	private PlanRequestReository planRequestReository;
+	
+	
 
-	@PostMapping("/create/plans")
+	@PostMapping("/txn_api/v1.0/create/plans")
 	@ApiOperation(value = "Create/Update plans Details")
 
 	public ResponseEntity<?> createPlan(@RequestBody PlanReq req) {
@@ -40,18 +50,19 @@ public class PlanController {
 				res = planRequestReository.save(req);
 			}
 
-			return new ResponseEntity<>(res, HttpStatus.OK);
-		}
+			//return new ResponseEntity<>(res, HttpStatus.OK);
+			return ResponseHandler.generateResponse(HttpStatus.OK, res,"Plan Create successfully..");
+	} catch (Exception e) {
 
-		catch (Exception e) {
-
-			System.out.println(e.getMessage());
-			return new ResponseEntity<>("status:failed,message:" + e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
+		e.printStackTrace();
+		System.out.println("Error in createOrUpdate" + e.getMessage());
+		return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
 
 	}
 
-	@GetMapping("/getAll/plans")
+	}
+
+	@GetMapping("/txn_api/v1.0/getAll/plans")
 	@ApiOperation(value = "Get/plans Details")
 
 	public ResponseEntity<?> getAllPlan() {
@@ -61,17 +72,27 @@ public class PlanController {
 
 			List<PlanReq> plans = planRequestReository.findAll();
 
-			return new ResponseEntity<>(plans, HttpStatus.OK);
-		}
+			return ResponseHandler.generateResponse(HttpStatus.OK, plans,"Plan Fetched successfully..");
+		} catch (Exception e) {
 
-		catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error in createOrUpdate" + e.getMessage());
+			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
 
-			System.out.println(e.getMessage());
-			return new ResponseEntity<>("status:failed,message:" + e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 
 	}
 
+//	public ResponseEntity<Response> getPlans()
+//	{
+//		Response data = new Response();
+//		PlanReq allPlans = planservice.getPlans();
+//
+//			return new allPlans;
+//		}
+//
+//	}
+	
 //	@PostMapping(path = "/create/plans", produces = MediaType.APPLICATION_JSON_VALUE)
 //	public ResponseEntity<String> plan(@RequestBody final PlanRequest planRequest) {
 //
