@@ -19,10 +19,21 @@ public class PlanReq {
 	private String interval;
 	private String name;
 	private String currency;
-	@JsonProperty("Items") 
-    public Items items;
+    private  List<String> features;
 
 	
+	
+
+
+
+	public List<String> getFeatures() {
+		return features;
+	}
+
+	public void setFeatures(List<String> features) {
+		this.features = features;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -74,9 +85,10 @@ public class PlanReq {
 	@Override
 	public String toString() {
 		return "PlanReq [id=" + id + ", amount=" + amount + ", period=" + period + ", interval=" + interval + ", name="
-				+ name + ", currency=" + currency + ", items=" + items + "]";
+				+ name + ", currency=" + currency + ", features=" + features + "]";
 	}
 
+	
 //	public JSONObject toJsonObject() {
 //	JSONObject item = new JSONObject();
 //
