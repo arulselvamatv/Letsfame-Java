@@ -2,15 +2,9 @@ package com.letsfame.bean;
 
 import java.util.List;
 
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
-
-@Document(collection = "PlanReq")
+@Document(collection = "Plan_Details")
 public class PlanReq {
 
 	private String id;
@@ -19,12 +13,7 @@ public class PlanReq {
 	private String interval;
 	private String name;
 	private String currency;
-    private  List<String> features;
-
-	
-	
-
-
+	private List<String> features;
 
 	public List<String> getFeatures() {
 		return features;
@@ -88,7 +77,6 @@ public class PlanReq {
 				+ name + ", currency=" + currency + ", features=" + features + "]";
 	}
 
-	
 //	public JSONObject toJsonObject() {
 //	JSONObject item = new JSONObject();
 //

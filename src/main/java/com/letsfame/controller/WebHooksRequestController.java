@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.letsfame.bean.WebHooksResponse;
 import com.letsfame.repository.WebHooksResponseRepository;
 //import com.razorpay.RazorpayClient;
+import com.letsfame.response.WebHooksResponse;
 
 @RestController()
 public class WebHooksRequestController {
