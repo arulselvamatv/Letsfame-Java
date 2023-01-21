@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.letsfame.bean.PlanReq;
 import com.letsfame.repository.PlanRequestReository;
 import com.letsfame.response.ResponseHandler;
-import com.letsfame.service.PlanService;
 
 //import com.razorpay.Plan;
 //import com.razorpay.RazorpayClient;
@@ -29,14 +27,12 @@ public class PlanController {
 //	private RazorpayClient razorpayClient;
 
 	private @NonNull ResponseHandler responseGenerator;
-	
-	@Autowired
-	private PlanService planservice;
-	
+
+//	@Autowired
+//	private PlanServiceImpl planservice;
+
 	@Autowired
 	private PlanRequestReository planRequestReository;
-	
-	
 
 	@PostMapping("/txn_api/v1.0/create/plans")
 	@ApiOperation(value = "Create/Update plans Details")
@@ -50,15 +46,15 @@ public class PlanController {
 				res = planRequestReository.save(req);
 			}
 
-			//return new ResponseEntity<>(res, HttpStatus.OK);
-			return ResponseHandler.generateResponse(HttpStatus.OK, res,"Plan Create successfully..");
-	} catch (Exception e) {
+			// return new ResponseEntity<>(res, HttpStatus.OK);
+			return ResponseHandler.generateResponse(HttpStatus.OK, res, "Plan Create successfully..");
+		} catch (Exception e) {
 
-		e.printStackTrace();
-		System.out.println("Error in createOrUpdate" + e.getMessage());
-		return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
+			e.printStackTrace();
+			System.out.println("Error in createOrUpdate" + e.getMessage());
+			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
 
-	}
+		}
 
 	}
 
@@ -72,7 +68,7 @@ public class PlanController {
 
 			List<PlanReq> plans = planRequestReository.findAll();
 
-			return ResponseHandler.generateResponse(HttpStatus.OK, plans,"Plan Fetched successfully..");
+			return ResponseHandler.generateResponse(HttpStatus.OK, plans, "Plan Fetched successfully..");
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -92,7 +88,7 @@ public class PlanController {
 //		}
 //
 //	}
-	
+
 //	@PostMapping(path = "/create/plans", produces = MediaType.APPLICATION_JSON_VALUE)
 //	public ResponseEntity<String> plan(@RequestBody final PlanRequest planRequest) {
 //

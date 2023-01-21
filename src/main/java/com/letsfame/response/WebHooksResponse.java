@@ -1,4 +1,4 @@
-package com.letsfame.bean;
+package com.letsfame.response;
 
 import java.util.List;
 

@@ -1,25 +1,12 @@
 package com.letsfame.service;
 
-import java.util.List;
-import javax.validation.Valid;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.letsfame.bean.PlanReq;
-import com.letsfame.bean.PlanRequest;
-import com.letsfame.repository.PlanRequestReository;
-import com.letsfame.response.Response;
 
 
 @Service
 @Transactional
-public class PlanService {
+public class PlanService implements PlanServiceImpl {
 	
 //	@Autowired
 //	public PlanRequestReository planRequestReository;
