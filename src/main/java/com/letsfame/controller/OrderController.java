@@ -8,9 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.letsfame.bean.OrderRequest;
-import com.letsfame.repository.OrderRequestRepository;
+import com.letsfame.repository.OrderRepository;
 import com.letsfame.response.ResponseDto;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
@@ -22,7 +23,7 @@ public class OrderController {
 	private RazorpayClient razorpay;
 
 	@Autowired
-	private OrderRequestRepository orderRequestRepo;
+	private OrderRepository orderRequestRepo;
 
 	ObjectMapper objectMapper = new ObjectMapper();
 
