@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.letsfame.bean.OrderRequest;
 
 @Repository
-public interface OrderRequestRepository extends MongoRepository<OrderRequest, String> {
+public interface OrderRepository extends MongoRepository<OrderRequest, String> {
 
 }
