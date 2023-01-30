@@ -2,11 +2,28 @@ package com.letsfame.bean;
 
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "Plan_Details")
-public class PlanReq {
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+//@Entity
+//@DynamicInsert
+//@DynamicUpdate
+@Builder
+@Document(collection = "Plan")
+public class PlanReq {
+	@Id
 	private String id;
 	private Double amount;
 	private String period;
@@ -14,62 +31,6 @@ public class PlanReq {
 	private String name;
 	private String currency;
 	private List<String> features;
-
-	public List<String> getFeatures() {
-		return features;
-	}
-
-	public void setFeatures(List<String> features) {
-		this.features = features;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(String currency) {
-		this.currency = currency;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public Double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
-
-	public String getPeriod() {
-		return period;
-	}
-
-	public void setPeriod(String period) {
-		this.period = period;
-	}
-
-	public String getInterval() {
-		return interval;
-	}
-
-	public void setInterval(String interval) {
-		this.interval = interval;
-	}
 
 	@Override
 	public String toString() {

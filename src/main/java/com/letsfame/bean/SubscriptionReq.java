@@ -21,7 +21,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Document(collection = "subscriptionrequest")
-public class SubscriptionRequest {
+public class SubscriptionReq {
 
 	@JsonProperty("total_count")
 	private Double totalCount;
@@ -35,8 +35,7 @@ public class SubscriptionRequest {
 	private Date startAt;
 	@JsonProperty("expire_by")
 	private Date expireBy;
-	@JsonProperty("addons")
-	private List<AddOn> addons;
+	
 
 	public Double getTotalCount() {
 		return totalCount;
@@ -78,13 +77,6 @@ public class SubscriptionRequest {
 		this.expireBy = expireBy;
 	}
 
-	public List<AddOn> getAddons() {
-		return addons;
-	}
-
-	public void setAddons(List<AddOn> addons) {
-		this.addons = addons;
-	}
 
 	public String getPlanId() {
 		return planId;
@@ -97,8 +89,7 @@ public class SubscriptionRequest {
 	@Override
 	public String toString() {
 		return "SubscriptionRequest [totalCount=" + totalCount + ", planId=" + planId + ", quantity=" + quantity
-				+ ", customerNotify=" + customerNotify + ", startAt=" + startAt + ", expireBy=" + expireBy + ", addons="
-				+ addons + "]";
+				+ ", customerNotify=" + customerNotify + ", startAt=" + startAt + ", expireBy=" + expireBy + "]";
 	}
 
 	public JSONObject toJsonObject() {
@@ -115,21 +106,21 @@ public class SubscriptionRequest {
 		subscriptionRequest.put("expire_by", this.expireBy);
 
 		subscriptionRequest.put("plan_id", this.planId);
-
-		if (addons != null) {
-
-			JSONArray jsonarray = new JSONArray();
-
-			for (AddOn addOn : addons) {
-//				jsonarray.add(item.toJsonObject());
-				JSONObject itemObject = new JSONObject();
-//				itemObject.put("item", addOn.toJsonObject());
-
-				jsonarray.put(itemObject);
-
-			}
-			subscriptionRequest.put("addons", jsonarray);
-		}
+//
+//		if (addons != null) {
+//
+//			JSONArray jsonarray = new JSONArray();
+//
+//			for (AddOn addOn : addons) {
+////				jsonarray.add(item.toJsonObject());
+//				JSONObject itemObject = new JSONObject();
+////				itemObject.put("item", addOn.toJsonObject());
+//
+//				jsonarray.put(itemObject);
+//
+//			}
+//			subscriptionRequest.put("addons", jsonarray);
+//		}
 
 		return subscriptionRequest;
 	}
