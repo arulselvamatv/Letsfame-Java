@@ -9,3 +9,6 @@ import com.letsfame.bean.PlanReq;
 public interface PlanRequestReository extends MongoRepository<PlanReq, String> {
 
 }
+
+
+
