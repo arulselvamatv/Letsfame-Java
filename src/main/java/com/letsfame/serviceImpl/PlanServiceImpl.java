@@ -1,18 +1,18 @@
 package com.letsfame.serviceImpl;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.letsfame.bean.PlanFeaturesReq;
-import com.letsfame.bean.PlanReq;
-import com.letsfame.repository.PlanFeaturesRepository;
+import com.google.gson.Gson;
+import com.letsfame.bean.Item;
+import com.letsfame.bean.Notes;
+import com.letsfame.bean.Plans;
 import com.letsfame.repository.PlanRequestReository;
-import com.letsfame.response.ResponseDto;
 import com.letsfame.service.PlanService;
 import com.razorpay.Plan;
 import com.razorpay.RazorpayClient;
@@ -26,83 +26,99 @@ public class PlanServiceImpl implements PlanService {
 	private PlanRequestReository planRequestReository;
 
 	@Autowired
-	private PlanFeaturesRepository planFeaturesRepository;
-
-	@Autowired
 	private RazorpayClient razorpayClient;
 
 	@Override
-	public ResponseDto createPlan(PlanReq req) {
-		ResponseDto response = new ResponseDto();
-		List<String> error = new ArrayList<>();
-		PlanReq savedData = new PlanReq();
-		try {
+	public Plan createPlan(Plans req) throws RazorpayException {
 
-			if (req != null) {
-				savedData = planRequestReository.save(req);
-			} else {
-				error.add("Plan request should not be null");
+		Plans savedData = new Plans();
+		Plans savedData1 = new Plans();
+		Item saveItem = new Item();
+		Notes saveNotes = new Notes();
+		
+		savedData.setInterval(req.getInterval());
+		savedData.setPeriod(req.getPeriod());
+		savedData.setItem(req.getItem());
+		savedData.setNotes(req.getNotes());
+		
+		Plan plan = razorpayClient.plans.create(new JSONObject(new Gson().toJson(savedData)));
+
+		if (plan != null) {
+			savedData1.setPlanId(plan.toJson().getString("id"));
+			savedData1.setInterval(plan.toJson().getInt("interval"));
+			savedData1.setPeriod(plan.toJson().getString("period"));
+			
+			JSONObject newJSONString = plan.toJson().getJSONObject("item");
+			for (int i = 0; i < newJSONString.length(); i++) {
+				saveItem.setId(newJSONString.getString("id"));
+				saveItem.setName(newJSONString.getString("name"));
+				saveItem.setAmount(newJSONString.getInt("amount"));
+				saveItem.setCurrency(newJSONString.getString("currency"));
+				savedData1.setItem(saveItem);
+			}
+			JSONObject newJSONNotes = plan.toJson().getJSONObject("notes");
+			for (int i = 0; i < newJSONString.length(); i++) {
+				saveNotes.setNotes_key_1(newJSONNotes.getString("notes_key_1"));
+				saveNotes.setNotes_key_2(newJSONNotes.getString("notes_key_2"));
+				savedData1.setNotes(saveNotes);
 			}
 
-			// valdiation
-			// error.add("error");
-
-			if (error.isEmpty()) {
-				response.setData(savedData);
-				response.setStatus("Success");
-			} else {
-
-				response.setStatus("Failed");
-				response.setMessages(error);
-			}
-			// return res;
-
-		} catch (Exception e) {
-
-			response.setStatus("Failed");
-
-			error.add(e.getMessage());
-			response.setMessages(error);
-			// response.getMessages().add(e.getMessage());
-
-			System.out.println("Error :: createPlan :: Exception::" + ExceptionUtils.getStackTrace(e));
-
+			planRequestReository.save(savedData1);
 		}
-		return response;
+		return plan;
+	}
+	
+	@Override
+	public List<Plans> getPlans() {
+		return planRequestReository.findAll();
 	}
 
 	@Override
-	public ResponseDto getPlans() {
-		ResponseDto response = new ResponseDto();
-		List<String> error = new ArrayList<>();
-		List<PlanReq> savedData = new ArrayList<PlanReq>();
-//		List<Plan> Plans = new ArrayList<Plan>();
+	public Optional<Plans> getPlan(String id) {
 
-		try {
+		return planRequestReository.findById(id);
+	
+	}
+}
 
-//			Plans = razorpayClient.plans.fetchAll();
-//			response.setData(Plans);
+
+
+//
+//	@Override
+//	public ResponseDto createPlanFeatures(PlanFeaturesReq req) {
+//
+//		ResponseDto response = new ResponseDto();
+//		List<String> error = new ArrayList<>();
+//		PlanFeaturesReq savedData = new PlanFeaturesReq();
+//		try {
+//			savedData = planFeaturesRepository.save(req);
+//			response.setData(savedData);
 //			response.setStatus("Success");
-
-			savedData = planRequestReository.findAll();
-
-			response.setData(savedData);
-			response.setStatus("Success");
-
-		} catch (Exception e) {
-			response.setStatus("Failed");
-
-			error.add(e.getMessage());
-			response.setMessages(error);
-			response.getMessages().add(e.getMessage());
-
-			System.out.println("Error :: createPlan :: Exception::" + ExceptionUtils.getStackTrace(e));
-
-		}
-
+//		}
+//		catch (Exception e) {
+//
+//			response.setStatus("Failed");
+//
+//			error.add(e.getMessage());
+//			response.setMessages(error);
+//			// response.getMessages().add(e.getMessage());
+//
+//			System.out.println("Error :: createPlan :: Exception::" + ExceptionUtils.getStackTrace(e));
+//
+//		}
+//
+//		return response;
+//	}
+//
+//	@Override
+//	public ResponseDto getPlanFeatures() {
+//		ResponseDto response = new ResponseDto();
+//		List<String> error = new ArrayList<>();
+//		List<PlanFeaturesReq> savedData = new ArrayList<PlanFeaturesReq>();
+//
 //		try {
 //
-//			savedData = planRequestReository.findAll();
+//			savedData = planFeaturesRepository.findAll();
 //
 //			response.setData(savedData);
 //			response.setStatus("Success");
@@ -119,96 +135,11 @@ public class PlanServiceImpl implements PlanService {
 //			System.out.println("Error :: createPlan :: Exception::" + ExceptionUtils.getStackTrace(e));
 //
 //		}
-
-		return response;
-	}
-
-	@Override
-	public ResponseDto createPlanFeatures(PlanFeaturesReq req) {
-
-		ResponseDto response = new ResponseDto();
-		List<String> error = new ArrayList<>();
-		PlanFeaturesReq savedData = new PlanFeaturesReq();
-
-//				PlanReq res = new PlanReq();
-
-		try {
-
-			savedData = planFeaturesRepository.save(req);
-
-			response.setData(savedData);
-			response.setStatus("Success");
-		}
-
-		catch (Exception e) {
-
-			response.setStatus("Failed");
-
-			error.add(e.getMessage());
-			response.setMessages(error);
-			// response.getMessages().add(e.getMessage());
-
-			System.out.println("Error :: createPlan :: Exception::" + ExceptionUtils.getStackTrace(e));
-
-		}
-
-		return response;
-	}
-
-	@Override
-	public ResponseDto getPlanFeatures() {
-		ResponseDto response = new ResponseDto();
-		List<String> error = new ArrayList<>();
-		List<PlanFeaturesReq> savedData = new ArrayList<PlanFeaturesReq>();
-
-//			PlanReq res = new PlanReq();
-
-		try {
-
-			savedData = planFeaturesRepository.findAll();
-
-			response.setData(savedData);
-			response.setStatus("Success");
-		}
-
-		catch (Exception e) {
-
-			response.setStatus("Failed");
-
-			error.add(e.getMessage());
-			response.setMessages(error);
-			// response.getMessages().add(e.getMessage());
-
-			System.out.println("Error :: createPlan :: Exception::" + ExceptionUtils.getStackTrace(e));
-
-		}
-
-		return response;
-	}
-
-//	@Override
-//	public ResponseDto getPlan(PlanReq req) {
-//		
-//		ResponseDto response = new ResponseDto();
-//		List<String> error = new ArrayList<>();
-//		List<PlanReq> savedData = new ArrayList<PlanReq>();
-//		// TODO Auto-generated method stub
-//		
-//		
 //
-//		try {
-//
-//			 savedData = planRequestReository.findById(null)
-//
-//			response.setData(savedData);
-//			response.setStatus("Success");
-//		}
-//		
-//		
-//		return null;
+//		return response;
 //	}
 
-}
+
 //	
 //	@Autowired
 //	private RazorpayClient razorpayClient;

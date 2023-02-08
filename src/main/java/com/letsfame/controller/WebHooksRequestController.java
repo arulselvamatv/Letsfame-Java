@@ -10,13 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.letsfame.repository.WebHooksResponseRepository;
 //import com.razorpay.RazorpayClient;
 import com.letsfame.response.WebHooksResponse;
 
-@RestController()
+@RestController
+@RequestMapping("/Webhooks")
 public class WebHooksRequestController {
 
 //	@Autowired
@@ -25,7 +27,7 @@ public class WebHooksRequestController {
 	@Autowired
 	private WebHooksResponseRepository webHooksResponseRepository;
 
-	@PostMapping(path = "/payment/webhooks", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/txn_api/v1.0/webhook", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> plan(@RequestBody final WebHooksResponse webHooksResponse) {
 
 		JSONObject message = new JSONObject();

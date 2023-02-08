@@ -1,11 +1,9 @@
 package com.letsfame.bean;
 
-import java.util.List;
+import java.io.Serializable;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,12 +17,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-//@Entity
-//@DynamicInsert
-//@DynamicUpdate
 @Builder
 @Document(collection = "Payment")
-public class PaymentReq {
+public class Payments implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	private String id;
