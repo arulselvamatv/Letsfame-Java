@@ -1,9 +1,5 @@
 package com.letsfame.bean;
 
-import java.util.ArrayList;
-
-import org.springframework.data.annotation.Id;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,15 +12,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-//@Entity
-//@DynamicInsert
-//@DynamicUpdate
 @Builder
+public class Notes {
 
-public class PlanFeaturesReq {
-	@Id
-	private String id;
-
-	private ArrayList<PlanFeatures> planFeatures;
+	private String notes_key_1;
+	
+	private String notes_key_2;
 
 }

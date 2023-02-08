@@ -1,33 +1,35 @@
 package com.letsfame.response;
 
-import java.util.List;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class ResponseHandler {
 
-//	public static ResponseEntity<Object> generateResponse(HttpStatus status, Object responseObj, String message) {
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		map.put("message", message);
-//		map.put("status", status.value());
-//		map.put("data", responseObj);
-//		return new ResponseEntity<Object>(map, status);
-//	}
-	public static ResponseEntity<Object> generateResponse(HttpStatus status, Object responseObj) {
-		// In case Handle some more data in future
-		return new ResponseEntity<Object>(responseObj, status);
-	}
-	public static ResponseEntity<Object> generateResponse(HttpStatus status, List<Object>responseObj) {
-		// In case Handle some more data in future
-		return new ResponseEntity<Object>(responseObj, status);
-	}
-
+	private static final Logger logger = Logger.getLogger(ResponseHandler.class);
+	
 	public static ResponseEntity<Response> errorResponse(String errorMessage, HttpStatus httpStatus) {
 		Error error = new Error();
 		error.setReason(errorMessage);
 		Response response = new Response();
 		response.setError(error);
+		response.setTimeStamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
+		logger.debug("response class is " + Data.class);
+		logger.debug("response status is " + httpStatus.toString());
+		ResponseEntity<Response> responseEntity = new ResponseEntity<Response>(response, httpStatus);
+		return responseEntity;
+	}
+
+	public static ResponseEntity<Response> successGetResponse(String message, Object object, HttpStatus httpStatus) {
+
+		Response response = new Response();
+		response.setData(object);
+		response.setMessage(message);
+		response.setTimeStamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
+		logger.debug("response class is " + Data.class);
+		logger.debug("response status is " + httpStatus.toString());
 		ResponseEntity<Response> responseEntity = new ResponseEntity<Response>(response, httpStatus);
 		return responseEntity;
 	}

@@ -1,4 +1,4 @@
-package com.letsfame.bean;
+package com.letsfame.Req;
 
 import java.util.Date;
 import java.util.List;

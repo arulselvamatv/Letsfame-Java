@@ -1,19 +1,22 @@
 package com.letsfame.service;
 
-import com.letsfame.bean.PlanFeaturesReq;
-import com.letsfame.bean.PlanReq;
-import com.letsfame.response.ResponseDto;
+import java.util.List;
+import java.util.Optional;
+
+import com.letsfame.bean.Plans;
+import com.razorpay.Plan;
+import com.razorpay.RazorpayException;
 
 public interface PlanService {
 
-	ResponseDto createPlan(PlanReq req);
+	Plan createPlan(Plans req) throws RazorpayException;
 
-	ResponseDto getPlans();
+	List<Plans> getPlans();
 
-	ResponseDto createPlanFeatures(PlanFeaturesReq req);
+	Optional<Plans> getPlan(String id);
 
-	ResponseDto getPlanFeatures();
-
-//	ResponseDto getPlan(PlanReq req); 
+//	ResponseDto createPlanFeatures(PlanFeaturesReq req);
+//
+//	ResponseDto getPlanFeatures();
 
 }
