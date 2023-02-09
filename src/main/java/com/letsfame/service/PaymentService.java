@@ -1,11 +1,12 @@
-//package com.letsfame.service;
-//
-//import com.letsfame.bean.Payments;
-//
-//public interface PaymentService {
-//
-//	ResponseDto getPaymentDetails(Payments req);
-//
-//	ResponseDto getAllPaymentDetails();
-//
-//}
+package com.letsfame.service;
+
+import com.letsfame.bean.Payments;
+import com.letsfame.response.Response;
+
+public interface PaymentService {
+
+	Response getPaymentDetails(Payments req);
+
+//	Response getAllPaymentDetails();
+
+}

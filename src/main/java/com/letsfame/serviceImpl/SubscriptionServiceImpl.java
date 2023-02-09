@@ -51,8 +51,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 				savedData1.setPlan_id(subscription.toJson().getString("plan_id"));
 				savedData1.setTotal_count(subscription.toJson().getInt("total_count"));
 				savedData1.setQuantity(subscription.toJson().getInt("total_count"));
-				savedData1.setStart_at(new Date(subscription.toJson().getInt("start_at")));
-				savedData1.setExpire_by(new Date(subscription.toJson().getInt("expire_by")));
+				savedData1.setStart_at(new Date(subscription.toJson().getLong("start_at")));
+				savedData1.setExpire_by(new Date(subscription.toJson().getLong("expire_by")));
 				savedData1.setCustomer_notify(subscription.toJson().getBoolean("customer_notify"));
 				savedData1.setStatus(subscription.toJson().getString("status"));
 				savedData1.setShort_url(subscription.toJson().getString("short_url"));

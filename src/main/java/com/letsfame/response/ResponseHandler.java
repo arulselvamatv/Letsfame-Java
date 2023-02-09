@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 
 public class ResponseHandler {
 
-	private static final Logger logger = Logger.getLogger(ResponseHandler.class);
+//	private static final Logger logger = Logger.getLogger(ResponseHandler.class);
 	
 	public static ResponseEntity<Response> errorResponse(String errorMessage, HttpStatus httpStatus) {
 		Error error = new Error();
@@ -16,8 +16,8 @@ public class ResponseHandler {
 		Response response = new Response();
 		response.setError(error);
 		response.setTimeStamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
-		logger.debug("response class is " + Data.class);
-		logger.debug("response status is " + httpStatus.toString());
+//		logger.debug("response class is " + Data.class);
+//		logger.debug("response status is " + httpStatus.toString());
 		ResponseEntity<Response> responseEntity = new ResponseEntity<Response>(response, httpStatus);
 		return responseEntity;
 	}
@@ -28,8 +28,8 @@ public class ResponseHandler {
 		response.setData(object);
 		response.setMessage(message);
 		response.setTimeStamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
-		logger.debug("response class is " + Data.class);
-		logger.debug("response status is " + httpStatus.toString());
+//		logger.debug("response class is " + Data.class);
+//		logger.debug("response status is " + httpStatus.toString());
 		ResponseEntity<Response> responseEntity = new ResponseEntity<Response>(response, httpStatus);
 		return responseEntity;
 	}

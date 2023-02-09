@@ -1,0 +1,17 @@
+package com.letsfame.webhook;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+public class AcquirerData {
+	public String rrn;
+	public String upi_transaction_id;
+}
