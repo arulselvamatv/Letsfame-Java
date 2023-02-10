@@ -12,6 +12,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Payload {
-	public Payment payment;
+	private Payment payment;
 
 }

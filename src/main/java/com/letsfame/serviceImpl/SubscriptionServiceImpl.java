@@ -16,6 +16,7 @@ import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 import com.razorpay.Subscription;
 
+
 @Service
 @Transactional
 public class SubscriptionServiceImpl implements SubscriptionService {
@@ -86,6 +87,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 		return subscriptionRequestRepository.findAll();
 
+	}
+
+	@Override
+	public Subscriptions findOne(String id) {
+		return subscriptionRequestRepository.findById(id).get();
+	}
+
+	@Override
+	public Subscriptions findBySubscriptionsId(String subscriptionsId) {
+		return subscriptionRequestRepository.findBySubscriptionsId(subscriptionsId);
 	}
 
 }

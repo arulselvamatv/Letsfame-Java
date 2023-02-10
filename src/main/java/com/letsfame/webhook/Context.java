@@ -13,20 +13,20 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Context {
-	public String id;
-	public Date ts;
-	public Object pipeline_id;
-	public String workflow_id;
-	public String deployment_id;
-	public String source_type;
-	public boolean verified;
-	public Object hops;
-	public boolean test;
-	public boolean replay;
-	public String owner_id;
-	public String platform_version;
-	public String workflow_name;
-	public Object resume;
-	public String trace_id;
+	private String id;
+	private Date ts;
+	private Object pipeline_id;
+	private String workflow_id;
+	private String deployment_id;
+	private String source_type;
+	private boolean verified;
+	private Object hops;
+	private boolean test;
+	private boolean replay;
+	private String owner_id;
+	private String platform_version;
+	private String workflow_name;
+	private Object resume;
+	private String trace_id;
 
 }

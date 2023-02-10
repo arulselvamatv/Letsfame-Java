@@ -20,7 +20,7 @@ import com.letsfame.response.ResponseHandler;
 //import com.razorpay.RazorpayClient;
 import com.letsfame.response.WebHooksResponse;
 import com.letsfame.service.webhookService;
-import com.letsfame.webhook.paymentDetailsWebhook;
+import com.letsfame.webhook.PaymentDetailsWebhook;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -51,7 +51,7 @@ public class WebhookController {
 
 	@ApiOperation(value = "Create or Update payment event details", response = Response.class)
 	@PostMapping(value = "/getpayment", produces = "application/json")
-	public ResponseEntity<?> getwebhook(@RequestBody paymentDetailsWebhook notification) throws Exception{
+	public ResponseEntity<?> getwebhook(@RequestBody PaymentDetailsWebhook notification) throws Exception{
 
 		try {
 

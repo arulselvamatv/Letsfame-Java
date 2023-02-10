@@ -12,6 +12,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class AcquirerData {
-	public String rrn;
-	public String upi_transaction_id;
+	private String rrn;
+	private String upi_transaction_id;
 }

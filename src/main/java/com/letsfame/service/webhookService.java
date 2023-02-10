@@ -1,9 +1,9 @@
 package com.letsfame.service;
 
 import com.letsfame.response.Response;
-import com.letsfame.webhook.paymentDetailsWebhook;
+import com.letsfame.webhook.PaymentDetailsWebhook;
 
 public interface webhookService {
 
-	Response getpayment(paymentDetailsWebhook notification);
+	Response getpayment(PaymentDetailsWebhook notification);
 }

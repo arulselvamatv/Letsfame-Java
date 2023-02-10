@@ -13,11 +13,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Event {
-	public String entity;
-	public String account_id;
-	public String event;
-	public ArrayList<String> contains;
-	public Payload payload;
-	public int created_at;
+	private String entity;
+	private String account_id;
+	private String event;
+	private ArrayList<String> contains;
+	private Payload payload;
+	private int created_at;
 
 }

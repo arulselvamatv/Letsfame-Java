@@ -5,30 +5,33 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.letsfame.bean.Payments;
 import com.letsfame.response.Response;
 import com.letsfame.response.ResponseHandler;
 import com.letsfame.service.PaymentService;
+import com.razorpay.Payment;
 
 import io.swagger.annotations.ApiOperation;
 
 @RestController()
+@RequestMapping("/txn_api/v1.0/payments")
 public class PaymentController {
 
 	@Autowired
 	private PaymentService paymentService;
 
-	@PostMapping(path = "/txn_api/v1.0/paymentDetails")
-	@ApiOperation(value = "Update Payment Details")
-	public ResponseEntity<?> paymentsDetails(@RequestBody Payments req) {
+	@ApiOperation(value = "Update payments details", response = Response.class)
+	@PostMapping(value = "/Update", produces = "application/json")
+	public ResponseEntity<?> paymentsDetails(@RequestBody Payments req) throws Exception {
 
 		try {
 
-			Response response = paymentService.getPaymentDetails(req);
+			Payment res = paymentService.getPaymentDetails(req);
 
-			return ResponseHandler.successGetResponse("Created successfully.", response, HttpStatus.OK);
+			return ResponseHandler.successGetResponse("Created successfully.", res.toJson().toMap(), HttpStatus.OK);
 		} catch (Exception e) {
 
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -13,6 +13,6 @@ import lombok.ToString;
 @ToString
 public class Payment {
 	
-	public Entity entity;
+	private Entity entity;
 
 }

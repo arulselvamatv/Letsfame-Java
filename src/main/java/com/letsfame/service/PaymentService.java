@@ -1,12 +1,13 @@
 package com.letsfame.service;
 
 import com.letsfame.bean.Payments;
-import com.letsfame.response.Response;
+import com.razorpay.Payment;
+import com.razorpay.RazorpayException;
 
 public interface PaymentService {
 
-	Response getPaymentDetails(Payments req);
+	Payment getPaymentDetails(Payments req) throws RazorpayException;
 
-//	Response getAllPaymentDetails();
+//Response getAllPaymentDetails();
 
 }

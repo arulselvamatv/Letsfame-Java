@@ -18,10 +18,11 @@ import lombok.ToString;
 @ToString
 @Document(collection = "Webhook")
 //@JsonIgnoreProperties(value = { "subscriptionsId", "status" }, allowGetters = true)
-public class paymentDetailsWebhook implements Serializable {
+public class PaymentDetailsWebhook implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public Context context;
-	public Event event;
+	private Context context;
+	private Event event;
+	private String  subscriptionId;
 }
