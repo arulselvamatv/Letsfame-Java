@@ -12,7 +12,7 @@ public class ResponseHandler {
 	
 	public static ResponseEntity<Response> errorResponse(String errorMessage, HttpStatus httpStatus) {
 		Error error = new Error();
-		error.setReason(errorMessage);
+		error.setReason(errorMessage.replace("BAD_REQUEST_ERROR:"," "));
 		Response response = new Response();
 		response.setError(error);
 		response.setTimeStamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));

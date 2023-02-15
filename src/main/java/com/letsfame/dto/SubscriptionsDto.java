@@ -16,6 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+//@Document(collection = "subscription")
 public class SubscriptionsDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -24,17 +25,16 @@ public class SubscriptionsDto implements Serializable {
 //	public Id id;
 
 	private String memberId;
-	
+
 	private String plan_id;
 
 	private int total_count;
 
 	private int quantity;
 
-	private int start_at;
+	private Integer start_at;
 
-
-	private int expire_by;
+	private Integer expire_by;
 
 	private Boolean customer_notify;
 

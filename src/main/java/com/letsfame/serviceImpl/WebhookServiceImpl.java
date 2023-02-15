@@ -1,10 +1,9 @@
 package com.letsfame.serviceImpl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.json.JSONObject;
@@ -24,11 +23,10 @@ import com.letsfame.repository.WebHooksResponseRepository;
 import com.letsfame.response.Response;
 import com.letsfame.service.SubscriptionService;
 import com.letsfame.service.webhookService;
-import com.letsfame.webhook.Entity;
+import com.letsfame.util.DateUtils;
 import com.letsfame.webhook.PaymentDetailsWebhook;
 import com.letsfame.webhook.PaymentStatusByMember;
 import com.razorpay.Invoice;
-import com.razorpay.Plan;
 import com.razorpay.RazorpayClient;
 
 @Service
@@ -62,6 +60,7 @@ public class WebhookServiceImpl implements webhookService {
 		PaymentDetailsWebhook savedData1 = new PaymentDetailsWebhook();
 		PaymentStatusByMember paymentstatus = new PaymentStatusByMember();
 		List<String> error = new ArrayList<>();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 		System.out.println("webhook ::" + notification);
 		try {
@@ -69,7 +68,8 @@ public class WebhookServiceImpl implements webhookService {
 			// To get invoice details for find subscription ID
 			Invoice invoice = razorpayClient.invoices
 					.fetch(notification.getEvent().getPayload().getPayment().getEntity().getInvoice_id());
-			System.out.println("invoice::"+invoice.get("subscription_id"));
+
+			System.out.println("invoice::" + invoice.get("subscription_id"));
 			notification.setSubscriptionId(invoice.get("subscription_id"));
 
 			// To save payments status
@@ -83,6 +83,8 @@ public class WebhookServiceImpl implements webhookService {
 			paymentstatus.setPaymentId(savedData1.getEvent().getPayload().getPayment().getEntity().getId());
 //			paymentstatus.setSubscribedAt(savedData1.getEvent().getPayload().getPayment().getEntity().getCreated_at());
 
+//			paymentstatus.setSubscribedAt(DateUtils.getRazorPayTimeStamp(savedData1.getEvent().getPayload().getPayment().getEntity().getCreated_at()));
+
 			// To get Member ID
 			Subscriptions subscription = subscriptionService.findBySubscriptionsId(notification.getSubscriptionId());
 			String memberId = subscription.getMemberId();
@@ -93,10 +95,10 @@ public class WebhookServiceImpl implements webhookService {
 			HttpEntity<PaymentStatusByMember> entity = new HttpEntity<PaymentStatusByMember>(paymentstatus, headers);
 			String fullUrl = url + "/api/v1.0/member/" + memberId + "/subscription";
 			System.out.println("Full URL::" + fullUrl);
-			
+
 			ResponseEntity<String> res = restTemplate.exchange(fullUrl, HttpMethod.PUT, entity, String.class);
-			
-			System.out.println("res:::"+res);
+
+			System.out.println("res:::" + res);
 
 			response.setData(new JSONObject(res.getBody()).toMap());
 			response.setMessage("Success");
