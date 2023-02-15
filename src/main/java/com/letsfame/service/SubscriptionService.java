@@ -11,4 +11,9 @@ public interface SubscriptionService {
 	Subscription createSubscription(Subscriptions req) throws RazorpayException;
 	
 	List<Subscriptions> getsubscriptions();
+	
+	Subscriptions findOne(String id);
+	
+	Subscriptions findBySubscriptionsId(String subscriptionsId);
+	
 }

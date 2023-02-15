@@ -11,4 +11,6 @@ public interface SubscriptionRequestRepository  extends MongoRepository<Subscrip
 
 	void save(Subscription subscription);
 
+	Subscriptions findBySubscriptionsId(String subscriptionsId);
+
 }

@@ -28,7 +28,7 @@ import lombok.AllArgsConstructor;
 public class SubscriptionController {
 
 	private @NotNull SubscriptionService subscriptionService;
-	
+
 	@Autowired
 	private @NotNull MessagePropertyService messageSource;
 
@@ -38,7 +38,7 @@ public class SubscriptionController {
 
 		try {
 			Subscription res = subscriptionService.createSubscription(Req);
-			return ResponseHandler.successGetResponse("Created successfully.", res.toJson().toMap(),HttpStatus.OK);
+			return ResponseHandler.successGetResponse("Created successfully.", res.toJson().toMap(), HttpStatus.OK);
 		} catch (Exception e) {
 
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -53,7 +53,7 @@ public class SubscriptionController {
 		try {
 
 			List<Subscriptions> res = subscriptionService.getsubscriptions();
-			return ResponseHandler.successGetResponse("Fetched successfully.", res,HttpStatus.OK);
+			return ResponseHandler.successGetResponse("Fetched successfully.", res, HttpStatus.OK);
 		} catch (Exception e) {
 
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

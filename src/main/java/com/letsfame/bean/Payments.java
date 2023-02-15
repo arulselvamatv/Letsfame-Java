@@ -5,6 +5,8 @@ import java.io.Serializable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +21,8 @@ import lombok.ToString;
 @ToString
 @Builder
 @Document(collection = "Payment")
-public class Payments implements Serializable{
+@JsonIgnoreProperties(value = { "createdAt" }, allowGetters = true)
+public class Payments implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
