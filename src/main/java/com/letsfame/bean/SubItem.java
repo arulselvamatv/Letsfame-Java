@@ -1,5 +1,7 @@
 package com.letsfame.bean;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,11 +15,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
-public class PlanFeatures {
+public class SubItem implements Serializable{
 
-	public String content;
-	public String free;
-	public String premium;
-	public String pro;
+	private static final long serialVersionUID = 1L;
 
+	public String name;
+	public int amount;
+	public String currency;
+	
 }

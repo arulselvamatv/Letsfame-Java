@@ -1,7 +1,6 @@
-package com.letsfame.bean;
+package com.letsfame.webhook;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,12 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Builder
-public class PlanFeatures {
-
-	public String content;
-	public String free;
-	public String premium;
-	public String pro;
-
+public class AcquirerData {
+	private String rrn;
+	private String upi_transaction_id;
 }

@@ -1,12 +1,15 @@
 package com.letsfame.service;
 
-import com.letsfame.bean.PaymentReq;
-import com.letsfame.response.ResponseDto;
+import java.util.List;
+
+import com.letsfame.bean.Payments;
+import com.razorpay.Payment;
+import com.razorpay.RazorpayException;
 
 public interface PaymentService {
-	
-	ResponseDto getPaymentDetails(PaymentReq req);
-	
-	ResponseDto getAllPaymentDetails();
+
+	Payment getPaymentDetails(Payments req) throws RazorpayException;
+
+	List<Payments> getAllPaymentDetails();
 
 }

@@ -11,43 +11,45 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.letsfame.bean.Payments;
+import com.letsfame.dto.PaymentDetailsWebhookDto;
 import com.letsfame.response.Response;
 import com.letsfame.response.ResponseHandler;
-import com.letsfame.service.PaymentService;
-import com.razorpay.Payment;
+import com.letsfame.service.webhookService;
 
 import io.swagger.annotations.ApiOperation;
 
-@RestController()
-@RequestMapping("/txn_api/v1.0/payments")
-public class PaymentController {
+@RestController
+@RequestMapping("/txn_api/v1.0/Webhook")
+public class WebhookController {
 
 	@Autowired
-	private PaymentService paymentService;
+	private webhookService webhookService;
 
-	@ApiOperation(value = "Update payments details", response = Response.class)
-	@PostMapping(value = "/Update", produces = "application/json")
-	public ResponseEntity<?> paymentDetails(@RequestBody Payments req) throws Exception {
+	@ApiOperation(value = "Create or Update payment event details", response = Response.class)
+	@PostMapping(value = "/get/Status", produces = "application/json")
+	public ResponseEntity<?> webhookPaymentNotifications(@RequestBody PaymentDetailsWebhookDto notification)
+			throws Exception {
 
 		try {
 
-			Payment res = paymentService.getPaymentDetails(req);
+			Response res = webhookService.webhookpaymentNotification(notification);
 
-			return ResponseHandler.successGetResponse("Created successfully.", res.toJson().toMap(), HttpStatus.OK);
+			return ResponseHandler.successGetResponse("Created successfully.", res, HttpStatus.OK);
+
 		} catch (Exception e) {
 
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+
 	}
 
-	@GetMapping(path = "getAllPayments")
-	@ApiOperation(value = "Get payments details", response = Response.class)
-	public ResponseEntity<?> getAllPaymentDetails() {
+	@GetMapping(path = "/getAll/Status")
+	@ApiOperation(value = "Get Webhook details", response = Response.class)
+	public ResponseEntity<?> webhookAllPaymentNotifications() {
 
 		try {
 
-			List<Payments> res = paymentService.getAllPaymentDetails();
+			List<PaymentDetailsWebhookDto> res = webhookService.getWebhookNotification();
 
 			return ResponseHandler.successGetResponse("Fetched successfully.", res, HttpStatus.OK);
 		} catch (Exception e) {
@@ -56,5 +58,4 @@ public class PaymentController {
 		}
 
 	}
-
 }

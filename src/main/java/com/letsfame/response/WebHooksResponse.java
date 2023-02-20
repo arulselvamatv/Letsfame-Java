@@ -40,6 +40,6 @@ public class WebHooksResponse {
 
 	private String active;
 
-	private List events;
+	private List <String> events;
 
 }
