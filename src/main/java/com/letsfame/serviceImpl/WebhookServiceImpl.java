@@ -19,13 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.letsfame.bean.Subscriptions;
+import com.letsfame.dto.PaymentDetailsWebhookDto;
+import com.letsfame.dto.PaymentStatusByMemberDto;
 import com.letsfame.repository.WebHooksResponseRepository;
 import com.letsfame.response.Response;
 import com.letsfame.service.SubscriptionService;
 import com.letsfame.service.webhookService;
-import com.letsfame.util.DateUtils;
-import com.letsfame.webhook.PaymentDetailsWebhook;
-import com.letsfame.webhook.PaymentStatusByMember;
 import com.razorpay.Invoice;
 import com.razorpay.RazorpayClient;
 
@@ -34,7 +33,7 @@ import com.razorpay.RazorpayClient;
 public class WebhookServiceImpl implements webhookService {
 
 	@Autowired
-	private WebHooksResponseRepository webHooksResponseRepository;
+	private WebHooksResponseRepository webHooksRepository;
 
 	@Value("${com.letsfame.serviceImpl.WebhookServiceImpl.username}")
 	private String username;
@@ -50,15 +49,15 @@ public class WebhookServiceImpl implements webhookService {
 	RestTemplate restTemplate = new RestTemplate();
 
 	@Override
-	public Response getpayment(PaymentDetailsWebhook notification) {
+	public Response webhookpaymentNotification(PaymentDetailsWebhookDto notification) {
 
 		Response response = new Response();
 		if (!"payment.captured".equalsIgnoreCase(notification.getEvent().getEvent())) {
 			return response;
 		}
 
-		PaymentDetailsWebhook savedData1 = new PaymentDetailsWebhook();
-		PaymentStatusByMember paymentstatus = new PaymentStatusByMember();
+		PaymentDetailsWebhookDto savedData1 = new PaymentDetailsWebhookDto();
+		PaymentStatusByMemberDto paymentstatus = new PaymentStatusByMemberDto();
 		List<String> error = new ArrayList<>();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -69,11 +68,16 @@ public class WebhookServiceImpl implements webhookService {
 			Invoice invoice = razorpayClient.invoices
 					.fetch(notification.getEvent().getPayload().getPayment().getEntity().getInvoice_id());
 
+			System.out.println("invoice_details::" + invoice);
+
 			System.out.println("invoice::" + invoice.get("subscription_id"));
 			notification.setSubscriptionId(invoice.get("subscription_id"));
 
+//			System.out.println("invoice::" + invoice.get("expire_by"));
+//			notification.setExpireBy(invoice.get("expire_by"));
+
 			// To save payments status
-			savedData1 = webHooksResponseRepository.save(notification);
+			savedData1 = webHooksRepository.save(notification);
 
 			// To share data to member API
 
@@ -82,17 +86,18 @@ public class WebhookServiceImpl implements webhookService {
 			paymentstatus.setSubscriptionId(notification.getSubscriptionId());
 			paymentstatus.setPaymentId(savedData1.getEvent().getPayload().getPayment().getEntity().getId());
 //			paymentstatus.setSubscribedAt(savedData1.getEvent().getPayload().getPayment().getEntity().getCreated_at());
-
-//			paymentstatus.setSubscribedAt(DateUtils.getRazorPayTimeStamp(savedData1.getEvent().getPayload().getPayment().getEntity().getCreated_at()));
+//			paymentstatus.setExpiredAt(notification.getExpireBy());
 
 			// To get Member ID
 			Subscriptions subscription = subscriptionService.findBySubscriptionsId(notification.getSubscriptionId());
+			System.out.println("subscriptionID::" + subscription);
 			String memberId = subscription.getMemberId();
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.setBasicAuth(username, password);
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			HttpEntity<PaymentStatusByMember> entity = new HttpEntity<PaymentStatusByMember>(paymentstatus, headers);
+			HttpEntity<PaymentStatusByMemberDto> entity = new HttpEntity<PaymentStatusByMemberDto>(paymentstatus,
+					headers);
 			String fullUrl = url + "/api/v1.0/member/" + memberId + "/subscription";
 			System.out.println("Full URL::" + fullUrl);
 
@@ -114,4 +119,12 @@ public class WebhookServiceImpl implements webhookService {
 		}
 		return response;
 	}
+
+	@Override
+	public List<PaymentDetailsWebhookDto> getWebhookNotification() {
+
+		return webHooksRepository.findAll();
+
+	}
+
 }
