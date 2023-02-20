@@ -1,8 +1,11 @@
 package com.letsfame.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +28,7 @@ public class PaymentController {
 
 	@ApiOperation(value = "Update payments details", response = Response.class)
 	@PostMapping(value = "/Update", produces = "application/json")
-	public ResponseEntity<?> paymentsDetails(@RequestBody Payments req) throws Exception {
+	public ResponseEntity<?> paymentDetails(@RequestBody Payments req) throws Exception {
 
 		try {
 
@@ -37,22 +40,21 @@ public class PaymentController {
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	@GetMapping(path = "getAllPayments")
+	@ApiOperation(value = "Get payments details", response = Response.class)
+	public ResponseEntity<?> getAllPaymentDetails() {
+
+		try {
+
+			List<Payments> res = paymentService.getAllPaymentDetails();
+
+			return ResponseHandler.successGetResponse("Fetched successfully.", res, HttpStatus.OK);
+		} catch (Exception e) {
+
+			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+
 }
-//
-//	@GetMapping(path = "/txn_api/v1.0/fetchAllPayments")
-//	@ApiOperation(value = "getall Payment Details")
-//	public ResponseEntity<?> payments() {
-//
-//		try {
-//
-//			ResponseDto res = paymentService.getAllPaymentDetails();
-//
-//			return ResponseHandler.successGetResponse("Created successfully.", res,HttpStatus.OK);
-//		} catch (Exception e) {
-//
-//			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//
-//	}
-//
-//}

@@ -36,7 +36,7 @@ public class PaymentServiceImpl implements PaymentService {
 		Map<String, Object> message = new HashMap<String, Object>();
 
 		Payment payment = razorpayClient.payments.fetch(req.getId());
-		
+
 		System.out.println("payment:::" + payment);
 
 //		paymentdetails.setId(payment.get("id"));
@@ -68,34 +68,10 @@ public class PaymentServiceImpl implements PaymentService {
 		return payment;
 	}
 
+	@Override
+	public List<Payments> getAllPaymentDetails() {
+
+		return paymentRepository.findAll();
+
+	}
 }
-//
-//	@Override
-//	public ResponseDto getAllPaymentDetails() {
-//		ResponseDto response = new ResponseDto();
-//		List<String> error = new ArrayList<>();
-//		List<Payments> savedData = new ArrayList<Payments>();
-//
-//		try {
-//
-//			savedData = paymentRepository.findAll();
-//
-//			response.setData(savedData);
-//			response.setStatus("Success");
-//		}
-//
-//		catch (Exception e) {
-//
-//			response.setStatus("Failed");
-//
-//			error.add(e.getMessage());
-//			response.setMessages(error);
-//			// response.getMessages().add(e.getMessage());
-//
-//			System.out.println("Error :: createPlan :: Exception::" + ExceptionUtils.getStackTrace(e));
-//
-//		}
-//
-//		return response;
-//	}
-//}
