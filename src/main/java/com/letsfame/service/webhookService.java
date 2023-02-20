@@ -1,9 +1,13 @@
 package com.letsfame.service;
 
+import java.util.List;
+
+import com.letsfame.dto.PaymentDetailsWebhookDto;
 import com.letsfame.response.Response;
-import com.letsfame.webhook.PaymentDetailsWebhook;
 
 public interface webhookService {
 
-	Response getpayment(PaymentDetailsWebhook notification);
+	Response webhookpaymentNotification(PaymentDetailsWebhookDto notification);
+
+	List<PaymentDetailsWebhookDto> getWebhookNotification();
 }

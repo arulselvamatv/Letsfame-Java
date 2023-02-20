@@ -1,6 +1,4 @@
-package com.letsfame.webhook;
-
-import java.util.Date;
+package com.letsfame.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -19,7 +17,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class PaymentStatusByMember {
+public class PaymentStatusByMemberDto {
 
 	@JsonProperty("razor_customer_id")
 	private String razorCustomerId;
@@ -33,14 +31,15 @@ public class PaymentStatusByMember {
 	@JsonProperty("payment_frequency")
 	private String paymentFrequency;
 
-	@JsonProperty("created_at")
+	
 	@JsonDeserialize(using = UnixTimestampDeserializer.class)
 	@JsonSerialize(using = UnixTimestampSerializer.class)
+	@JsonProperty("created_at")
 	private String subscribedAt;
 
-	@JsonProperty("expired_at")
+	@JsonProperty("expire_by")
 	@JsonDeserialize(using = UnixTimestampDeserializer.class)
 	@JsonSerialize(using = UnixTimestampSerializer.class)
-	private String expiredAt;
+	private Integer expiredAt;
 
 }
