@@ -3,26 +3,21 @@ package com.letsfame.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.letsfame.bean.Addons;
-import com.letsfame.bean.Notes;
-import com.letsfame.bean.subCustomerNotifyInfo;
+import com.letsfame.bean.LetsFameSubscriptionAddon;
+import com.letsfame.bean.LetsFamePlanNote;
+import com.letsfame.bean.SubCustomerNotifyInfo;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-//@Document(collection = "subscription")
+@ToString
+
 public class SubscriptionsDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-//	@Id
-//	public Id id;
 
 	private String memberId;
 
@@ -38,12 +33,12 @@ public class SubscriptionsDto implements Serializable {
 
 	private Boolean customer_notify;
 
-	private ArrayList<Addons> addons;
+	private ArrayList<LetsFameSubscriptionAddon> addons;
 
 	private String offer_id;
 
-	private Notes notes;
+	private LetsFamePlanNote notes;
 
-	private subCustomerNotifyInfo notify_info;
+	private SubCustomerNotifyInfo notify_info;
 
 }

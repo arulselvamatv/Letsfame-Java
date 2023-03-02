@@ -1,61 +1,60 @@
-//package com.letsfame.controller;
-//
-//import javax.validation.constraints.NotNull;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.CrossOrigin;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import com.letsfame.bean.Orders;
-//import com.letsfame.response.ResponseDto;
-//import com.letsfame.response.ResponseHandler;
-//import com.letsfame.service.OrderService;
-//
-//import io.swagger.annotations.ApiOperation;
-//import lombok.AllArgsConstructor;
-//@CrossOrigin(origins = "*", maxAge = 3600)
-//@RestController
-//@AllArgsConstructor(onConstructor_ = { @Autowired })
-//@RequestMapping("/txn_api/v1.0/subscription")
-//public class OrderController {
-//
-//	@Autowired
-//	private @NotNull OrderService orderService;
-//
-//	@PostMapping(value = "/create", produces = "application/json")
-//	@ApiOperation(value = "Create/Update order Details")
-//	public ResponseEntity<?> order(@RequestBody Orders req) {
-//
-//		try {
-//
-//			ResponseDto res = orderService.createOrder(req);
-//
-//			return ResponseHandler.generateResponse(HttpStatus.OK, res);
-//		} catch (Exception e) {
-//
-//			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//	}
-//
-//	@GetMapping(value = "/FetchAll", produces = "application/json")
-//	@ApiOperation(value = "getall Orders Details")
-//	public ResponseEntity<?> Orders() {
-//
-//		try {
-//
-//			ResponseDto res = orderService.getOrders();
-//
-//			return ResponseHandler.generateResponse(HttpStatus.OK, res);
-//		} catch (Exception e) {
-//
-//			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//
-//	}
-//}
+package com.letsfame.controller;
+
+import java.util.List;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.letsfame.Req.LetsFameOrderReq;
+import com.letsfame.bean.LetsFameOrder;
+import com.letsfame.response.ResponseHandler;
+import com.letsfame.service.OrderService;
+import com.razorpay.Order;
+
+import io.swagger.annotations.ApiOperation;
+
+@RestController
+@RequestMapping("/txn_api/v1.0/order")
+public class OrderController {
+
+	@Autowired
+	private OrderService orderService;
+
+	@PostMapping(value = "/create", produces = "application/json")
+	@ApiOperation(value = "Create order Details")
+	public ResponseEntity<?> createOrder(@RequestBody LetsFameOrderReq req) throws Exception {
+
+		try {
+
+			Order res = orderService.createOrder(req);
+
+			return ResponseHandler.successGetResponse("Created successfully.", res.toJson().toMap(), HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("Error :: createOrder :: Exception :: " + ExceptionUtils.getStackTrace(e));
+			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping(value = "/FetchAll", produces = "application/json")
+	@ApiOperation(value = "getall Orders Details")
+	public ResponseEntity<?> getOrders() throws Exception {
+
+		try {
+
+			List<LetsFameOrder> res = orderService.getOrders();
+
+			return ResponseHandler.successGetResponse("Created successfully.", res, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("Error :: getOrders :: Exception :: " + ExceptionUtils.getStackTrace(e));
+			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+}

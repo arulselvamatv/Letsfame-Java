@@ -4,16 +4,12 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
 @Document(collection = "webhooks")
 public class WebHooksResponse {
@@ -40,6 +36,6 @@ public class WebHooksResponse {
 
 	private String active;
 
-	private List <String> events;
+	private List<String> events;
 
 }
