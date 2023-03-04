@@ -1,19 +1,18 @@
-package com.letsfame.webhook;
+package com.letsfame.bean;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
-public class Entity {
-
-	private String id;
+public class WebhookEntity {
+	
+	@JsonProperty("id")
+	private String paymentId;
 	private String entity;
 	private int amount;
 	private String currency;
@@ -26,7 +25,7 @@ public class Entity {
 	private Object refund_status;
 	private boolean captured;
 	private String description;
-	private Object card_id;
+	private Object cardId;
 	private Object bank;
 	private Object wallet;
 	private String vpa;
@@ -34,14 +33,14 @@ public class Entity {
 	private String contact;
 	private String customer_id;
 	private String token_id;
-	private Notes notes;
+	private WebhookNote notes;
 	private Object fee;
 	private Object tax;
-	private Object error_code;
-	private Object error_description;
-	private Object error_source;
-	private Object error_step;
-	private Object error_reason;
-	private AcquirerData acquirer_data;
+	private Object errorCode;
+	private Object errorDescription;
+	private Object errorSource;
+	private Object errorStep;
+	private Object errorReason;
+	private WebhookAcquirerData acquirerData;
 	private int created_at;
 }

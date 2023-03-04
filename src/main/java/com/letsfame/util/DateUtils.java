@@ -9,6 +9,6 @@ public class DateUtils {
 		if (value == null) {
 			return null;
 		}
-		return new Date(TimeUnit.SECONDS.toMillis(Long.valueOf((String) value)));
+		return new Date(TimeUnit.SECONDS.toMillis(Long.valueOf(value.toString())));
 	}
 }

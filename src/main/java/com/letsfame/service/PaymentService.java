@@ -2,14 +2,16 @@ package com.letsfame.service;
 
 import java.util.List;
 
-import com.letsfame.bean.Payments;
+import com.letsfame.Req.LetsFamePaymentReq;
+import com.letsfame.bean.LetsFamePayment;
 import com.razorpay.Payment;
-import com.razorpay.RazorpayException;
 
 public interface PaymentService {
 
-	Payment getPaymentDetails(Payments req) throws RazorpayException;
+	Payment updatePaymentDetails(LetsFamePaymentReq req) throws Exception;
 
-	List<Payments> getAllPaymentDetails();
+	List<LetsFamePayment> getAllPaymentDetails() throws Exception;
+
+	LetsFamePayment findByPaymentId(String paymentId) throws Exception;
 
 }

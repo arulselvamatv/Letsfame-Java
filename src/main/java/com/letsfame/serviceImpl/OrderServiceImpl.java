@@ -1,95 +1,69 @@
-//package com.letsfame.serviceImpl;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import org.apache.commons.lang3.exception.ExceptionUtils;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//import org.springframework.transaction.annotation.Transactional;
-//
-//import com.letsfame.bean.Orders;
-//import com.letsfame.repository.OrderRepository;
-//import com.letsfame.response.ResponseDto;
-//import com.letsfame.service.OrderService;
-//import com.razorpay.Order;
-//import com.razorpay.RazorpayClient;
-//
-//@Service
-//@Transactional
-//public class OrderServiceImpl implements OrderService {
-//
-//	@Autowired
-//	private OrderRepository orderRepository;
-//
-//	@Autowired
-//	private RazorpayClient razorpay;
-//
-//	@Override
-//	public ResponseDto createOrder(Orders req) {
-//
-//		ResponseDto response = new ResponseDto();
-//		List<String> error = new ArrayList<>();
-//		Orders resOrders = new Orders();
-//		try {
-//
-//			Order order = razorpay.orders.create(req.toJsonObject());
-//			System.out.println("order:::" + order);
-//
-//			resOrders.setAmount(Double.parseDouble(order.get("amount").toString()));
-//			resOrders.setCurrency(order.get("currency"));
-//			resOrders.setReceipt(order.get("receipt"));
-//			resOrders.setOrderId(order.get("id"));
-////			resOrders.setStatus(order.get("Status"));
-//			System.out.println("resOrders:::" + resOrders);
-//
-//			resOrders = orderRepository.save(resOrders);
-//
-//			response.setData(resOrders);
-//			response.setStatus("Success");
-//			// return res;
-//
-//		} catch (Exception e) {
-//
-//			response.setStatus("Failed");
-//
-//			error.add(e.getMessage());
-//			response.setMessages(error);
-//			// response.getMessages().add(e.getMessage());
-//
-//			System.out.println("Error :: createPlan :: Exception::" + ExceptionUtils.getStackTrace(e));
-//
-//		}
-//		return response;
-//	}
-//
-//	@Override
-//	public ResponseDto getOrders() {
-//		ResponseDto response = new ResponseDto();
-//		List<String> error = new ArrayList<>();
-//		List<Orders> savedData = new ArrayList<Orders>();
-//
-//		try {
-//
-//			savedData = orderRepository.findAll();
-//
-//			response.setData(savedData);
-//			response.setStatus("Success");
-//		}
-//
-//		catch (Exception e) {
-//
-//			response.setStatus("Failed");
-//
-//			error.add(e.getMessage());
-//			response.setMessages(error);
-//			// response.getMessages().add(e.getMessage());
-//
-//			System.out.println("Error :: createPlan :: Exception::" + ExceptionUtils.getStackTrace(e));
-//
-//		}
-//
-//		return response;
-//	}
-//
-//}
+package com.letsfame.serviceImpl;
+
+import java.util.List;
+
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.letsfame.Req.LetsFameOrderReq;
+import com.letsfame.bean.LetsFameOrder;
+import com.letsfame.repository.OrderRepository;
+import com.letsfame.service.OrderService;
+import com.razorpay.Order;
+import com.razorpay.RazorpayClient;
+
+@Service
+@Transactional
+public class OrderServiceImpl implements OrderService {
+
+	@Autowired
+	private OrderRepository orderRepository;
+
+	@Autowired
+	private RazorpayClient razorpay;
+
+	private final ObjectMapper objectMapper = new ObjectMapper();
+
+	@Override
+	public Order createOrder(LetsFameOrderReq req) throws Exception {
+
+		JSONObject jsonObject = new JSONObject(objectMapper.writeValueAsString(req));
+
+		Order order = razorpay.orders.create(jsonObject);
+		System.out.println("order:::" + order);
+
+		if (order != null) {
+
+			LetsFameOrder savedData = razorPayOrderToLetsFameOrder(order);
+
+			orderRepository.save(savedData);
+		}
+
+		return order;
+
+	}
+
+	private LetsFameOrder razorPayOrderToLetsFameOrder(Order order) {
+		LetsFameOrder savedData1 = new LetsFameOrder();
+
+		JSONObject orderJsonObject = order.toJson();
+		savedData1.setOrderId(orderJsonObject.getString("id"));
+		savedData1.setCurrency(orderJsonObject.getString("currency"));
+		savedData1.setAmount(orderJsonObject.getDouble("amount"));
+		savedData1.setReceipt(orderJsonObject.getString("receipt"));
+
+		return savedData1;
+
+	}
+
+	@Override
+	public List<LetsFameOrder> getOrders() throws Exception {
+
+		return orderRepository.findAll();
+
+	}
+
+}

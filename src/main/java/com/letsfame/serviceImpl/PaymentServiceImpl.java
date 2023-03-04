@@ -1,22 +1,19 @@
 package com.letsfame.serviceImpl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.letsfame.bean.Payments;
+import com.letsfame.Req.LetsFamePaymentReq;
+import com.letsfame.bean.LetsFamePayment;
 import com.letsfame.repository.PaymentRepository;
-import com.letsfame.response.Response;
 import com.letsfame.service.PaymentService;
+import com.letsfame.util.DateUtils;
 import com.razorpay.Payment;
 import com.razorpay.RazorpayClient;
-import com.razorpay.RazorpayException;
 
 @Service
 @Transactional
@@ -29,49 +26,71 @@ public class PaymentServiceImpl implements PaymentService {
 	private RazorpayClient razorpayClient;
 
 	@Override
-	public Payment getPaymentDetails(Payments req) throws RazorpayException {
-		Response response = new Response();
-		List<String> error = new ArrayList<>();
-		Payments paymentdetails = new Payments();
-		Map<String, Object> message = new HashMap<String, Object>();
+	public Payment updatePaymentDetails(LetsFamePaymentReq req) throws Exception {
 
-		Payment payment = razorpayClient.payments.fetch(req.getId());
+		Payment payment = razorpayClient.payments.fetch(req.getPaymentId());
 
-		System.out.println("payment:::" + payment);
-
-//		paymentdetails.setId(payment.get("id"));
-
-//		paymentdetails.setOrder_id(payment.get("order_id"));
-//		paymentdetails.setBank(payment.get("bank"));
-//		paymentdetails.setCurrency(payment.get("currency"));
-//		paymentdetails.setContact(payment.get("contact"));
-//		paymentdetails.setEmail(payment.get("email"));
-//		paymentdetails.setAmount(Double.parseDouble(payment.get("amount").toString()));
-//		paymentdetails.setMethod(payment.get("method"));
-//		paymentdetails.setStatus(payment.get("status"));
-//		paymentdetails.setCreatedAt(payment.get(null));
-
-		paymentdetails.setId(payment.toJson().getString("id"));
-		paymentdetails.setCurrency(payment.toJson().getString("currency"));
-		paymentdetails.setContact(payment.toJson().getString("contact"));
-		paymentdetails.setEmail(payment.toJson().getString("email"));
-		paymentdetails.setAmount(Double.parseDouble(payment.toJson().get("amount").toString()));
-		paymentdetails.setMethod(payment.toJson().getString("method"));
-		paymentdetails.setStatus(payment.toJson().getString("status"));
-		paymentdetails.setOrder_id(payment.toJson().getString("order_id"));
-
-		paymentdetails = paymentRepository.save(paymentdetails);
-
-		response.setData(paymentdetails);
-		response.setMessage("Success");
+		if (payment != null) {
+			LetsFamePayment responseData = razorPayPaymentToLetsFamePayment(payment);
+			paymentRepository.save(responseData);
+		}
 
 		return payment;
 	}
 
+	private LetsFamePayment razorPayPaymentToLetsFamePayment(Payment payment) {
+
+		LetsFamePayment paymentData = new LetsFamePayment();
+
+		JSONObject paymentJsonObject = payment.toJson();
+
+		System.out.println("payment:::" + paymentJsonObject);
+
+		paymentData.setPaymentId(paymentJsonObject.getString("id"));
+		paymentData.setEntity(paymentJsonObject.getString("entity"));
+		paymentData.setAmount(paymentJsonObject.getDouble("amount"));
+		paymentData.setCurrency(paymentJsonObject.getString("currency"));
+		paymentData.setOrderId(paymentJsonObject.getString("order_id"));
+		paymentData.setInvoiceId(paymentJsonObject.getString("invoice_id"));
+		paymentData.setInternational(paymentJsonObject.getBoolean("international"));
+		paymentData.setMethod(paymentJsonObject.getString("method"));
+		paymentData.setAmount_refunded(paymentJsonObject.getDouble("amount_refunded"));
+		paymentData.setCaptured(paymentJsonObject.getBoolean("captured"));
+		if (!paymentJsonObject.isNull("description")) {
+			paymentData.setDescription(paymentJsonObject.getString("description"));
+		}
+		if (!paymentJsonObject.isNull("card_id")) {
+			paymentData.setCardId(paymentJsonObject.getJSONObject("card_id"));
+		}
+		if (!paymentJsonObject.isNull("bank")) {
+			paymentData.setBank(paymentJsonObject.getString("bank"));
+		}
+		if (!paymentJsonObject.isNull("wallet")) {
+			paymentData.setWallet(paymentJsonObject.getString("wallet"));
+		}
+		paymentData.setVpa(paymentJsonObject.getString("vpa"));
+		paymentData.setEmail(paymentJsonObject.getString("email"));
+		paymentData.setContact(paymentJsonObject.getString("contact"));
+		paymentData.setCustomerId(paymentJsonObject.getString("customer_id"));
+		paymentData.setTokenId(paymentJsonObject.getString("token_id"));
+
+		if (!paymentJsonObject.isNull("created_at")) {
+			paymentData.setCreatedAt(DateUtils.getRazorPayTimeStamp(paymentJsonObject.getInt("created_at")));
+		}
+
+		return paymentData;
+
+	}
+
 	@Override
-	public List<Payments> getAllPaymentDetails() {
+	public List<LetsFamePayment> getAllPaymentDetails() throws Exception {
 
 		return paymentRepository.findAll();
 
+	}
+
+	@Override
+	public LetsFamePayment findByPaymentId(String paymentId) throws Exception {
+		return paymentRepository.findByPaymentId(paymentId);
 	}
 }

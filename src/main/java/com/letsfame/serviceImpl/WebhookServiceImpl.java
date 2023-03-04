@@ -1,39 +1,39 @@
 package com.letsfame.serviceImpl;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.letsfame.bean.Subscriptions;
-import com.letsfame.dto.PaymentDetailsWebhookDto;
-import com.letsfame.dto.PaymentStatusByMemberDto;
-import com.letsfame.repository.WebHooksResponseRepository;
+import com.letsfame.bean.LetsFamePayment;
+import com.letsfame.bean.LetsFameSubscription;
+import com.letsfame.bean.WebhookPaymentDetails;
+import com.letsfame.bean.WebhookPaymentStatusByMember;
+import com.letsfame.repository.WebhooksRepository;
 import com.letsfame.response.Response;
+import com.letsfame.service.PaymentService;
 import com.letsfame.service.SubscriptionService;
-import com.letsfame.service.webhookService;
+import com.letsfame.service.WebhookService;
 import com.razorpay.Invoice;
 import com.razorpay.RazorpayClient;
 
 @Service
 @Transactional
-public class WebhookServiceImpl implements webhookService {
+public class WebhookServiceImpl implements WebhookService {
 
 	@Autowired
-	private WebHooksResponseRepository webHooksRepository;
+	private WebhooksRepository webHooksRepository;
 
 	@Value("${com.letsfame.serviceImpl.WebhookServiceImpl.username}")
 	private String username;
@@ -46,58 +46,65 @@ public class WebhookServiceImpl implements webhookService {
 
 	@Autowired
 	private SubscriptionService subscriptionService;
+
+	@Autowired
+	private PaymentService paymentService;
+
 	RestTemplate restTemplate = new RestTemplate();
 
 	@Override
-	public Response webhookpaymentNotification(PaymentDetailsWebhookDto notification) {
+	public Response webhookpaymentNotification(WebhookPaymentDetails notification) throws Exception {
 
 		Response response = new Response();
 		if (!"payment.captured".equalsIgnoreCase(notification.getEvent().getEvent())) {
 			return response;
 		}
 
-		PaymentDetailsWebhookDto savedData1 = new PaymentDetailsWebhookDto();
-		PaymentStatusByMemberDto paymentstatus = new PaymentStatusByMemberDto();
-		List<String> error = new ArrayList<>();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		WebhookPaymentDetails savedData1 = new WebhookPaymentDetails();
+		WebhookPaymentStatusByMember paymentstatus = new WebhookPaymentStatusByMember();
 
 		System.out.println("webhook ::" + notification);
-		try {
 
-			// To get invoice details for find subscription ID
-			Invoice invoice = razorpayClient.invoices
-					.fetch(notification.getEvent().getPayload().getPayment().getEntity().getInvoice_id());
+		// To get invoice details for find subscription ID
+		Invoice invoice = razorpayClient.invoices
+				.fetch(notification.getEvent().getPayload().getPayment().getEntity().getInvoice_id());
 
-			System.out.println("invoice_details::" + invoice);
+		System.out.println("invoice_details::" + invoice);
 
-			System.out.println("invoice::" + invoice.get("subscription_id"));
-			notification.setSubscriptionId(invoice.get("subscription_id"));
+		System.out.println("invoice::" + invoice.get("subscription_id"));
+		notification.setSubscriptionId(invoice.get("subscription_id"));
 
-//			System.out.println("invoice::" + invoice.get("expire_by"));
-//			notification.setExpireBy(invoice.get("expire_by"));
+		LetsFamePayment payments = paymentService
+				.findByPaymentId(notification.getEvent().getPayload().getPayment().getEntity().getPaymentId());
 
-			// To save payments status
+		// To save payments status
+		if (payments != null) {
 			savedData1 = webHooksRepository.save(notification);
-
+			System.out.println("Payments status updated Sucessfully ::" + savedData1);
 			// To share data to member API
 
 			paymentstatus
 					.setRazorCustomerId(savedData1.getEvent().getPayload().getPayment().getEntity().getCustomer_id());
 			paymentstatus.setSubscriptionId(notification.getSubscriptionId());
-			paymentstatus.setPaymentId(savedData1.getEvent().getPayload().getPayment().getEntity().getId());
-//			paymentstatus.setSubscribedAt(savedData1.getEvent().getPayload().getPayment().getEntity().getCreated_at());
-//			paymentstatus.setExpiredAt(notification.getExpireBy());
-
-			// To get Member ID
-			Subscriptions subscription = subscriptionService.findBySubscriptionsId(notification.getSubscriptionId());
+			paymentstatus.setPaymentId(savedData1.getEvent().getPayload().getPayment().getEntity().getPaymentId());
+			// To get Member ID and Audit Files
+			LetsFameSubscription subscription = subscriptionService
+					.findBySubscriptionsId(notification.getSubscriptionId());
 			System.out.println("subscriptionID::" + subscription);
 			String memberId = subscription.getMemberId();
+			paymentstatus.setExpiredAt(subscription.getExpire_by());
+			paymentstatus.setSubscribedAt(subscription.getStart_at());
+
+			System.out.println("expire::" + subscription.getExpire_by());
+			System.out.println("created::" + subscription.getCreated_at());
+			// Member API Connecting
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.setBasicAuth(username, password);
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			HttpEntity<PaymentStatusByMemberDto> entity = new HttpEntity<PaymentStatusByMemberDto>(paymentstatus,
-					headers);
+
+			HttpEntity<WebhookPaymentStatusByMember> entity = new HttpEntity<WebhookPaymentStatusByMember>(
+					paymentstatus, headers);
 			String fullUrl = url + "/api/v1.0/member/" + memberId + "/subscription";
 			System.out.println("Full URL::" + fullUrl);
 
@@ -106,22 +113,18 @@ public class WebhookServiceImpl implements webhookService {
 			System.out.println("res:::" + res);
 
 			response.setData(new JSONObject(res.getBody()).toMap());
-			response.setMessage("Success");
+			response.setHttpStatus(HttpStatus.OK);
 
-		} catch (Exception e) {
-
-			response.setMessage("Failed");
-			error.add(e.getMessage());
-//			response.setMessages(error);
-			// response.getMessages().add(e.getMessage());
-			System.out.println("Error :: createPlan :: Exception::" + ExceptionUtils.getStackTrace(e));
+		} else {
+			System.out.println("Payments status is null ::" + savedData1);
 
 		}
 		return response;
+
 	}
 
 	@Override
-	public List<PaymentDetailsWebhookDto> getWebhookNotification() {
+	public List<WebhookPaymentDetails> getWebhookNotification() {
 
 		return webHooksRepository.findAll();
 
