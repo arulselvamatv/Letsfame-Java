@@ -5,6 +5,8 @@ import java.io.Serializable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,16 +15,13 @@ import lombok.ToString;
 @Setter
 @ToString
 @Document(collection = "Webhook")
-//@JsonIgnoreProperties(value = { "subscriptionsId", "status" }, allowGetters = true)
+@JsonIgnoreProperties(value = { "id", "subscriptionsId", "status" }, allowGetters = true)
 public class WebhookPaymentDetails implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5169798492733221331L;
-
-	@Id
-	private String id;
 
 	private WebhookContext context;
 	private WebhookEvent event;

@@ -68,6 +68,8 @@ public class PaymentController {
 
 			LetsFamePayment res = paymentService.findByPaymentId(paymentId);
 
+			System.out.println("paymet" + res);
+
 			return ResponseHandler.successGetResponse("Fetched successfully.", res, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println("Error :: getPaymentDetailsById :: Exception :: " + ExceptionUtils.getStackTrace(e));

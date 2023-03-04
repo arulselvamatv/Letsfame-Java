@@ -21,14 +21,14 @@ import com.letsfame.service.WebhookService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/txn_api/v1.0/Webhook")
+@RequestMapping("/txn_api/v1.0/webhook")
 public class WebhookController {
 
 	@Autowired
 	private WebhookService webhookService;
 
 	@ApiOperation(value = "Create or Update payment event details", response = Response.class)
-	@PostMapping(value = "/get/Status", produces = "application/json")
+	@PostMapping(value = "/status", produces = "application/json")
 	public ResponseEntity<?> webhookPaymentNotifications(@RequestBody WebhookPaymentDetails notification)
 			throws Exception {
 
@@ -46,9 +46,9 @@ public class WebhookController {
 
 	}
 
-	@GetMapping(path = "/getAll/Status")
+	@GetMapping()
 	@ApiOperation(value = "Get Webhook details", response = Response.class)
-	public ResponseEntity<?> webhookAllPaymentNotifications() {
+	public ResponseEntity<?> webhookAllPaymentNotifications() throws Exception {
 
 		try {
 

@@ -29,26 +29,4 @@ public class WebhookPaymentStatusByMember {
 	@JsonSerialize(using = UnixTimestampSerializer.class)
 	private Date expiredAt;
 
-//	@JsonProperty("razor_customer_id")
-//	private String razorCustomerId;
-//
-//	@JsonProperty("subscription_id")
-//	private String subscriptionId;
-//
-//	@JsonProperty("payment_id")
-//	private String paymentId;
-//
-//	@JsonProperty("payment_frequency")
-//	private String paymentFrequency;
-//
-//	@JsonDeserialize(using = UnixTimestampDeserializer.class)
-//	@JsonSerialize(using = UnixTimestampSerializer.class)
-//	@JsonProperty("created_at")
-//	private Date subscribedAt;
-//
-//	@JsonProperty("expire_by")
-//	@JsonDeserialize(using = UnixTimestampDeserializer.class)
-//	@JsonSerialize(using = UnixTimestampSerializer.class)
-//	private Date expiredAt;
-
 }

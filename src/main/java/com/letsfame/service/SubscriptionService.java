@@ -11,7 +11,7 @@ public interface SubscriptionService {
 
 	Subscription createSubscription(LetsFameSubscriptionReq req) throws Exception;
 
-	List<LetsFameSubscription> getsubscriptions() throws Exception;
+	List<LetsFameSubscription> getsubscriptions(Integer pageNo, Integer pageSize, String sortBy) throws Exception;
 
 	LetsFameSubscription findOne(String id) throws Exception;
 

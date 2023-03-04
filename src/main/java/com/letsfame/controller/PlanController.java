@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,8 +64,8 @@ public class PlanController {
 	}
 
 	@ApiOperation(value = "Allows to fetch Plan Details", response = Response.class)
-	@GetMapping(value = "/getById", produces = "application/json")
-	public ResponseEntity<?> getPlanById(@RequestParam String planId) throws Exception {
+	@GetMapping(value = "/{planId}", produces = "application/json")
+	public ResponseEntity<?> getPlanById(@PathVariable String planId) throws Exception {
 
 		try {
 			LetsFamePlan res = planservice.getPlan(planId);

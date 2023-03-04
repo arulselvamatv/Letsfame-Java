@@ -22,7 +22,4 @@ public class LetsFamePlanReq {
 
 	private LetsFamePlanItemReq item;
 
-	// @JsonProperty("created_at")
-	// private Integer createdAt;
-
 }

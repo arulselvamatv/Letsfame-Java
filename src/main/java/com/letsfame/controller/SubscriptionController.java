@@ -39,7 +39,7 @@ public class SubscriptionController {
 	private MessagePropertyService messageSource;
 
 	@ApiOperation(value = "Create a subscription", response = Response.class)
-	@PostMapping(value = "/create", produces = "application/json")
+	@PostMapping(produces = "application/json")
 	public ResponseEntity<?> createSubscription(@RequestBody LetsFameSubscriptionReq Req) {
 
 		try {
@@ -53,23 +53,25 @@ public class SubscriptionController {
 	}
 
 	@ApiOperation(value = "Allows to fetch subscriptions Details", response = Response.class)
-	@GetMapping(value = "/getAll", produces = "application/json")
-	public ResponseEntity<?> getSubscriptions() throws Exception {
+	@GetMapping()
+	public ResponseEntity<?> findAllSubscriptions(@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy)
+			throws Exception {
 
 		try {
 
-			List<LetsFameSubscription> res = subscriptionService.getsubscriptions();
+			List<LetsFameSubscription> res = subscriptionService.getsubscriptions(pageNo, pageSize, sortBy);
 			return ResponseHandler.successGetResponse("Fetched successfully.", res, HttpStatus.OK);
 		} catch (Exception e) {
-			System.out.println("Error :: getSubscriptions :: Exception :: " + ExceptionUtils.getStackTrace(e));
+			System.out.println("Error :: findAllSubscriptions :: Exception :: " + ExceptionUtils.getStackTrace(e));
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
 
 	@ApiOperation(value = "Allows to fetch Plan Details", response = Response.class)
-	@GetMapping(value = "/getById", produces = "application/json")
-	public ResponseEntity<?> getPlanById(@RequestParam String subscriptionsId) throws Exception {
+	@GetMapping(value = "/{subscriptionsId}", produces = "application/json")
+	public ResponseEntity<?> getBySubscriptionId(@PathVariable String subscriptionsId) throws Exception {
 
 		try {
 			LetsFameSubscription res = subscriptionService.findBySubscriptionsId(subscriptionsId);
@@ -77,15 +79,15 @@ public class SubscriptionController {
 			return ResponseHandler.successGetResponse("Fetched successfully.", res, HttpStatus.OK);
 
 		} catch (Exception e) {
-			System.out.println("Error :: getPlanById :: Exception :: " + ExceptionUtils.getStackTrace(e));
+			System.out.println("Error :: getBySubscriptionId :: Exception :: " + ExceptionUtils.getStackTrace(e));
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
 
 	@ApiOperation(value = "Cancel the Subscription", response = Response.class)
-	@PostMapping(value = "/cancel", produces = "application/json")
-	public ResponseEntity<?> cancelSubscription(@RequestParam String subscriptionsId) throws Exception {
+	@PostMapping(value = "/cancel/{subscriptionsId}", produces = "application/json")
+	public ResponseEntity<?> cancelSubscription(@PathVariable String subscriptionsId) throws Exception {
 
 		try {
 			Subscription res = subscriptionService.cancelSubscription(subscriptionsId);
@@ -100,8 +102,8 @@ public class SubscriptionController {
 	}
 
 	@ApiOperation(value = "Pause the Subscription", response = Response.class)
-	@PostMapping(value = "/pause", produces = "application/json")
-	public ResponseEntity<?> pauseSubscription(@RequestParam String subscriptionsId) throws Exception {
+	@PostMapping(value = "/pause/{subscriptionsId}", produces = "application/json")
+	public ResponseEntity<?> pauseSubscription(@PathVariable String subscriptionsId) throws Exception {
 
 		try {
 			Subscription res = subscriptionService.pauseSubscription(subscriptionsId);
@@ -116,8 +118,8 @@ public class SubscriptionController {
 	}
 
 	@ApiOperation(value = "Resume the Subscription", response = Response.class)
-	@PostMapping(value = "/resume", produces = "application/json")
-	public ResponseEntity<?> resumeSubscription(@RequestParam String subscriptionsId) throws Exception {
+	@PostMapping(value = "/resume/{subscriptionsId}", produces = "application/json")
+	public ResponseEntity<?> resumeSubscription(@PathVariable String subscriptionsId) throws Exception {
 
 		try {
 			Subscription res = subscriptionService.resumeSubscription(subscriptionsId);
@@ -132,7 +134,7 @@ public class SubscriptionController {
 	}
 
 	@ApiOperation(value = "Subscription Upgrade And Downgrade", response = Response.class)
-	@PostMapping(value = "/{subscriptionsId}", produces = "application/json")
+	@PostMapping(value = "/upgrade-downgrade/{subscriptionsId}", produces = "application/json")
 	public ResponseEntity<?> subscriptionUpgradeandDowngrade(@PathVariable String subscriptionsId,
 			@RequestBody LetsFameSubscriptionUpgradeAndDowngradeReq req) throws Exception {
 

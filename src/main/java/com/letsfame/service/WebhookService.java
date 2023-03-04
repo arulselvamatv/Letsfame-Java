@@ -7,7 +7,7 @@ import com.letsfame.response.Response;
 
 public interface WebhookService {
 
-	Response webhookpaymentNotification(WebhookPaymentDetails notification);
+	Response webhookpaymentNotification(WebhookPaymentDetails notification) throws Exception;
 
-	List<WebhookPaymentDetails> getWebhookNotification();
+	List<WebhookPaymentDetails> getWebhookNotification() throws Exception;
 }

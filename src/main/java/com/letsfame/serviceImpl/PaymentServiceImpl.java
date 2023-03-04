@@ -91,6 +91,6 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Override
 	public LetsFamePayment findByPaymentId(String paymentId) throws Exception {
-		return paymentRepository.findByPaymentId(paymentId).get();
+		return paymentRepository.findByPaymentId(paymentId);
 	}
 }

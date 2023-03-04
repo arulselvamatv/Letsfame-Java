@@ -1,5 +1,7 @@
 package com.letsfame.bean;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,18 +10,19 @@ import lombok.ToString;
 @Setter
 @ToString
 public class WebhookEntity {
-
-	private String id;
+	
+	@JsonProperty("id")
+	private String paymentId;
 	private String entity;
 	private int amount;
 	private String currency;
 	private String status;
-	private String orderId;
-	private String invoiceId;
+	private String order_id;
+	private String invoice_id;
 	private boolean international;
 	private String method;
-	private int amountRefunded;
-	private Object refundStatus;
+	private int amount_refunded;
+	private Object refund_status;
 	private boolean captured;
 	private String description;
 	private Object cardId;
@@ -28,8 +31,8 @@ public class WebhookEntity {
 	private String vpa;
 	private String email;
 	private String contact;
-	private String customerId;
-	private String tokenId;
+	private String customer_id;
+	private String token_id;
 	private WebhookNote notes;
 	private Object fee;
 	private Object tax;
@@ -39,5 +42,5 @@ public class WebhookEntity {
 	private Object errorStep;
 	private Object errorReason;
 	private WebhookAcquirerData acquirerData;
-	private int createdAt;
+	private int created_at;
 }

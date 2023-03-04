@@ -1,9 +1,14 @@
 package com.letsfame.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -99,9 +104,18 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	}
 
 	@Override
-	public List<LetsFameSubscription> getsubscriptions() throws Exception {
+	public List<LetsFameSubscription> getsubscriptions(Integer pageNo, Integer pageSize, String sortBy)
+			throws Exception {
 
-		return subscriptionRequestRepository.findAll();
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+
+		Page<LetsFameSubscription> pagedResult = subscriptionRequestRepository.findAll(paging);
+
+		if (pagedResult.hasContent()) {
+			return pagedResult.getContent();
+		} else {
+			return new ArrayList<LetsFameSubscription>();
+		}
 
 	}
 

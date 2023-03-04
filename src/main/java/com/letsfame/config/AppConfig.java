@@ -9,7 +9,7 @@ import com.razorpay.RazorpayException;
 
 @Configuration
 @EnableWebMvc
-public class AppConfig  {
+public class AppConfig {
 
 	@Value("${razorpay.key.id}")
 	private String keyId;
@@ -22,28 +22,4 @@ public class AppConfig  {
 
 	}
 
-//	@Override
-//	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//		final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-//		final ObjectMapper objectMapper = new ObjectMapper();
-//		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-//		//objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-//		converter.setObjectMapper(objectMapper);
-//		converters.add(converter);
-//		WebMvcConfigurer.super.configureMessageConverters(converters);
-//
-//	}
-//	@Bean
-//	public ObjectMapper objectMapper() {
-//		ObjectMapper objectMapper = new ObjectMapper();
-//		objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-//		return objectMapper;
-//	}
-//	@Bean
-//	@ConditionalOnMissingBean(AbstractJackson2HttpMessageConverter.class)
-//	public ObjectMapper getMapper() {
-//		ObjectMapper objectMapper = new ObjectMapper();
-//		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-//		return objectMapper;
-//	}
 }
