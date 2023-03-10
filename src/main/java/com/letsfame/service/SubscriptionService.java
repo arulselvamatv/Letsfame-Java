@@ -2,14 +2,14 @@ package com.letsfame.service;
 
 import java.util.List;
 
-import com.letsfame.Req.LetsFameSubscriptionReq;
-import com.letsfame.Req.LetsFameSubscriptionUpgradeAndDowngradeReq;
 import com.letsfame.bean.LetsFameSubscription;
+import com.letsfame.request.SubscriptionCreateRequest;
+import com.letsfame.request.SubscriptionUpgradeAndDowngradeRequest;
 import com.razorpay.Subscription;
 
 public interface SubscriptionService {
 
-	Subscription createSubscription(LetsFameSubscriptionReq req) throws Exception;
+	Subscription createSubscription(SubscriptionCreateRequest req) throws Exception;
 
 	List<LetsFameSubscription> getsubscriptions(Integer pageNo, Integer pageSize, String sortBy) throws Exception;
 
@@ -23,7 +23,7 @@ public interface SubscriptionService {
 
 	Subscription resumeSubscription(String subscriptionsId) throws Exception;
 
-	Subscription subscriptionUpgradeandDowngrade(String subscriptionsId, LetsFameSubscriptionUpgradeAndDowngradeReq req)
+	Subscription subscriptionUpgradeandDowngrade(String subscriptionsId, SubscriptionUpgradeAndDowngradeRequest req)
 			throws Exception;
 
 }

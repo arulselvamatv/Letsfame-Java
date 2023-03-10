@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.letsfame.Req.LetsFameSubscriptionReq;
-import com.letsfame.Req.LetsFameSubscriptionUpgradeAndDowngradeReq;
 import com.letsfame.bean.LetsFameSubscription;
 import com.letsfame.bean.LetsFameSubscriptionNote;
 import com.letsfame.repository.SubscriptionRepository;
+import com.letsfame.request.SubscriptionCreateRequest;
+import com.letsfame.request.SubscriptionUpgradeAndDowngradeRequest;
 import com.letsfame.service.SubscriptionService;
 import com.letsfame.util.DateUtils;
 import com.razorpay.RazorpayClient;
@@ -36,7 +36,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Override
-	public Subscription createSubscription(LetsFameSubscriptionReq req) throws Exception {
+	public Subscription createSubscription(SubscriptionCreateRequest req) throws Exception {
 
 		JSONObject jsonObject = new JSONObject(objectMapper.writeValueAsString(req));
 
@@ -206,9 +206,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	@Override
 	public Subscription subscriptionUpgradeandDowngrade(String subscriptionsId,
-			LetsFameSubscriptionUpgradeAndDowngradeReq req) throws Exception {
+			SubscriptionUpgradeAndDowngradeRequest req) throws Exception {
 
-		LetsFameSubscriptionUpgradeAndDowngradeReq upgradeOrDowngradeData = new LetsFameSubscriptionUpgradeAndDowngradeReq();
+		SubscriptionUpgradeAndDowngradeRequest upgradeOrDowngradeData = new SubscriptionUpgradeAndDowngradeRequest();
 
 		JSONObject jsonObject = new JSONObject(objectMapper.writeValueAsString(upgradeOrDowngradeData));
 

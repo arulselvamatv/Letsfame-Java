@@ -3,12 +3,11 @@ package com.letsfame.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 
 @Configuration
-@EnableWebMvc
 public class AppConfig {
 
 	@Value("${razorpay.key.id}")

@@ -1,4 +1,5 @@
 package com.letsfame.advice;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,9 +30,9 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		log.info("Handling handleMethodArgumentNotValid Exception");
-		List<String> errorlist = ex.getBindingResult().getFieldErrors().stream().map(x -> ( x.getField() + " : " + x.getDefaultMessage()) )
-				.collect(Collectors.toList());
-		
+		List<String> errorlist = ex.getBindingResult().getFieldErrors().stream()
+				.map(x -> (x.getField() + " : " + x.getDefaultMessage())).collect(Collectors.toList());
+
 		Response response = new Response();
 		response.setData("Validation Failed");
 		Error err = new Error();
@@ -64,13 +65,13 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		log.info("Handling handleHttpMessageNotReadable Exception");
-		log.info("Exception:"+ExceptionUtils.getStackTrace(ex));
+
+		log.info("Exception:" + ExceptionUtils.getStackTrace(ex));
 
 		Error errors = new Error();
 		List<String> errorList = new ArrayList<>();
 		errors.setReason("Invalid Json Data");
-		if(ex.getMessage().contains("java.time.LocalDate")){
+		if (ex.getMessage().contains("java.time.LocalDate")) {
 			errorList.add("Invalid Date format / Invalid Date value");
 		}
 		errorList.addAll(Stream.of(ex.getMessage().split(",")).collect(Collectors.toList()));

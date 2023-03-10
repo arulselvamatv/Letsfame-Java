@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.letsfame.Req.LetsFamePaymentReq;
 import com.letsfame.bean.LetsFamePayment;
+import com.letsfame.request.PaymentUpdateRequest;
 import com.letsfame.response.Response;
 import com.letsfame.response.ResponseHandler;
 import com.letsfame.service.PaymentService;
@@ -31,7 +31,7 @@ public class PaymentController {
 
 	@ApiOperation(value = "Get / Update payments details", response = Response.class)
 	@PostMapping(value = "/fetch", produces = "application/json")
-	public ResponseEntity<?> updatepaymentStatus(@RequestBody LetsFamePaymentReq req) throws Exception {
+	public ResponseEntity<?> updatepaymentStatus(@RequestBody PaymentUpdateRequest req) throws Exception {
 
 		try {
 			Payment res = paymentService.updatePaymentDetails(req);
@@ -50,7 +50,7 @@ public class PaymentController {
 
 		try {
 
-			List<LetsFamePayment> res = paymentService.getAllPaymentDetails();
+			List<LetsFamePayment> res = paymentService.findAllPayment();
 
 			return ResponseHandler.successGetResponse("Fetched successfully.", res, HttpStatus.OK);
 		} catch (Exception e) {

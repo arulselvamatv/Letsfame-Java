@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.letsfame.Req.LetsFameOrderReq;
 import com.letsfame.bean.LetsFameOrder;
+import com.letsfame.request.OrderCreateRequest;
 import com.letsfame.response.ResponseHandler;
 import com.letsfame.service.OrderService;
 import com.razorpay.Order;
@@ -29,7 +29,7 @@ public class OrderController {
 
 	@PostMapping(value = "/create", produces = "application/json")
 	@ApiOperation(value = "Create order Details")
-	public ResponseEntity<?> createOrder(@RequestBody LetsFameOrderReq req) throws Exception {
+	public ResponseEntity<?> createOrder(@RequestBody OrderCreateRequest req) throws Exception {
 
 		try {
 

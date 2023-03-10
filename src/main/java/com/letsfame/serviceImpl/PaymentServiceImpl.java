@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.letsfame.Req.LetsFamePaymentReq;
 import com.letsfame.bean.LetsFamePayment;
 import com.letsfame.repository.PaymentRepository;
+import com.letsfame.request.PaymentUpdateRequest;
 import com.letsfame.service.PaymentService;
 import com.letsfame.util.DateUtils;
 import com.razorpay.Payment;
@@ -26,7 +26,7 @@ public class PaymentServiceImpl implements PaymentService {
 	private RazorpayClient razorpayClient;
 
 	@Override
-	public Payment updatePaymentDetails(LetsFamePaymentReq req) throws Exception {
+	public Payment updatePaymentDetails(PaymentUpdateRequest req) throws Exception {
 
 		Payment payment = razorpayClient.payments.fetch(req.getPaymentId());
 
@@ -83,7 +83,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public List<LetsFamePayment> getAllPaymentDetails() throws Exception {
+	public List<LetsFamePayment> findAllPayment() throws Exception {
 
 		return paymentRepository.findAll();
 

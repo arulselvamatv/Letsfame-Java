@@ -1,8 +1,8 @@
-package com.letsfame.Req;
+package com.letsfame.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class LetsFameOrderReq {
+public class OrderCreateRequest {
 
 	@JsonProperty("amount")
 	private String amount;

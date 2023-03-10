@@ -1,4 +1,4 @@
-package com.letsfame.Req;
+package com.letsfame.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(value = { "created_at" }, allowGetters = true)
-public class LetsFamePlanReq {
+public class PlanCreateRequest {
 
 	@JsonProperty("plan_id")
 	private String id;
@@ -18,8 +18,8 @@ public class LetsFamePlanReq {
 	@JsonProperty("interval")
 	private int interval;
 
-	private LetsFamePlanNoteReq notes;
+	private PlanNoteCreateRequest notes;
 
-	private LetsFamePlanItemReq item;
+	private PlanItemCreateRequest item;
 
 }
