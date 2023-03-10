@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.letsfame.Req.LetsFameOrderReq;
 import com.letsfame.bean.LetsFameOrder;
 import com.letsfame.repository.OrderRepository;
+import com.letsfame.request.OrderCreateRequest;
 import com.letsfame.service.OrderService;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
@@ -28,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Override
-	public Order createOrder(LetsFameOrderReq req) throws Exception {
+	public Order createOrder(OrderCreateRequest req) throws Exception {
 
 		JSONObject jsonObject = new JSONObject(objectMapper.writeValueAsString(req));
 

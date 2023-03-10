@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.letsfame.Req.LetsFamePlanReq;
 import com.letsfame.bean.LetsFamePlan;
 import com.letsfame.bean.LetsFamePlanItem;
 import com.letsfame.repository.PlanRepository;
+import com.letsfame.request.PlanCreateRequest;
 import com.letsfame.service.PlanService;
 import com.razorpay.Plan;
 import com.razorpay.RazorpayClient;
@@ -29,7 +29,7 @@ public class PlanServiceImpl implements PlanService {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Override
-	public Plan createPlan(LetsFamePlanReq req) throws Exception {
+	public Plan createPlan(PlanCreateRequest req) throws Exception {
 
 		JSONObject jsonObject = new JSONObject(objectMapper.writeValueAsString(req));
 
@@ -44,7 +44,7 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-	public Plan updatePlanDetails(LetsFamePlanReq req) throws Exception {
+	public Plan updatePlanDetails(PlanCreateRequest req) throws Exception {
 
 		System.out.println("here  ::" + req);
 

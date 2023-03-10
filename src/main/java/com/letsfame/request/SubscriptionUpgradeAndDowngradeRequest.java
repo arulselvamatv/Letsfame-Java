@@ -1,11 +1,11 @@
-package com.letsfame.Req;
+package com.letsfame.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
 @Data
-public class LetsFameSubscriptionUpgradeAndDowngradeReq {
+public class SubscriptionUpgradeAndDowngradeRequest {
 
 	@JsonProperty("plan_id")
 	private String planId;

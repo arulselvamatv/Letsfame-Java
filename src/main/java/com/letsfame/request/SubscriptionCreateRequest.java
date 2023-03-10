@@ -1,4 +1,4 @@
-package com.letsfame.Req;
+package com.letsfame.request;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,7 +17,7 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(value = { "subscriptionsId", "status", "short_url", "remaining_count", "end_at", "created_at",
 		"charge_at", "paid_count" }, allowGetters = true)
-public class LetsFameSubscriptionReq {
+public class SubscriptionCreateRequest {
 
 	@JsonProperty("member_id")
 	private String memberId;
@@ -44,7 +44,7 @@ public class LetsFameSubscriptionReq {
 	@JsonProperty("customer_notify")
 	private Boolean customerNotify;
 
-	private LetsFameSubcriptionNoteReq notes;
+	private SubcriptionNoteCreateRequest notes;
 
 	private ArrayList<LetsFameSubscriptionAddon> addons;
 

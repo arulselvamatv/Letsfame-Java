@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.letsfame.Req.LetsFameSubscriptionReq;
-import com.letsfame.Req.LetsFameSubscriptionUpgradeAndDowngradeReq;
 import com.letsfame.bean.LetsFameSubscription;
+import com.letsfame.request.SubscriptionCreateRequest;
+import com.letsfame.request.SubscriptionUpgradeAndDowngradeRequest;
 import com.letsfame.response.Response;
 import com.letsfame.response.ResponseHandler;
 import com.letsfame.service.SubscriptionService;
@@ -40,7 +40,7 @@ public class SubscriptionController {
 
 	@ApiOperation(value = "Create a subscription", response = Response.class)
 	@PostMapping(produces = "application/json")
-	public ResponseEntity<?> createSubscription(@RequestBody LetsFameSubscriptionReq Req) {
+	public ResponseEntity<?> createSubscription(@RequestBody SubscriptionCreateRequest Req) {
 
 		try {
 			Subscription res = subscriptionService.createSubscription(Req);
@@ -136,7 +136,7 @@ public class SubscriptionController {
 	@ApiOperation(value = "Subscription Upgrade And Downgrade", response = Response.class)
 	@PostMapping(value = "/upgrade-downgrade/{subscriptionsId}", produces = "application/json")
 	public ResponseEntity<?> subscriptionUpgradeandDowngrade(@PathVariable String subscriptionsId,
-			@RequestBody LetsFameSubscriptionUpgradeAndDowngradeReq req) throws Exception {
+			@RequestBody SubscriptionUpgradeAndDowngradeRequest req) throws Exception {
 
 		try {
 			Subscription res = subscriptionService.subscriptionUpgradeandDowngrade(subscriptionsId, req);

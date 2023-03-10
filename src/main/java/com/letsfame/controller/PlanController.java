@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.letsfame.Req.LetsFamePaymentReq;
-import com.letsfame.Req.LetsFamePlanReq;
 import com.letsfame.bean.LetsFamePlan;
+import com.letsfame.request.PaymentUpdateRequest;
+import com.letsfame.request.PlanCreateRequest;
 import com.letsfame.response.Response;
 import com.letsfame.response.ResponseHandler;
 import com.letsfame.service.PlanService;
@@ -38,7 +38,7 @@ public class PlanController {
 
 	@ApiOperation(value = "Create or Update plans Details", response = Response.class)
 	@PostMapping(produces = "application/json")
-	public ResponseEntity<?> createPlan(@RequestBody LetsFamePlanReq req) throws Exception {
+	public ResponseEntity<?> createPlan(@RequestBody PlanCreateRequest req) throws Exception {
 
 		try {
 			Plan res = planservice.createPlan(req);
@@ -81,7 +81,7 @@ public class PlanController {
 
 	@ApiOperation(value = "Update plan details", response = Response.class)
 	@PostMapping(value = "/Update", produces = "application/json")
-	public ResponseEntity<?> updatePlanDetails(@RequestBody LetsFamePlanReq req) throws Exception {
+	public ResponseEntity<?> updatePlanDetails(@RequestBody PlanCreateRequest req) throws Exception {
 
 		try {
 			Plan res = planservice.updatePlanDetails(req);
