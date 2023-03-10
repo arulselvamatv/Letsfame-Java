@@ -4,63 +4,60 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.letsfame.customJsonDeserializer.UnixTimestampDeserializer;
 import com.letsfame.customJsonDeserializer.UnixTimestampSerializer;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
 @Document(collection = "subscription")
-@JsonIgnoreProperties(value = { "subscriptionsId", "status", "short_url", "remaining_count", "end_at", "created_at",
-		"charge_at", "paid_count" }, allowGetters = true)
-public class Subscriptions implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+public class LetsFameSubscription implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5057897531225670585L;
+
+	@Id
+	private String id;
 
 	private String subscriptionsId;
 
 	private String memberId;
 
-	// private Subscription sub;
-
-	private String plan_id;
+	private String planId;
 
 	private Integer total_count;
 
 	private Integer quantity;
 
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	@JsonDeserialize(using = UnixTimestampDeserializer.class)
 	@JsonSerialize(using = UnixTimestampSerializer.class)
 	private Date start_at;
 
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	@JsonDeserialize(using = UnixTimestampDeserializer.class)
 	@JsonSerialize(using = UnixTimestampSerializer.class)
 	private Date expire_by;
 
 	private Boolean customer_notify;
 
-	private ArrayList<Addons> addons;
+	private ArrayList<LetsFameSubscriptionAddon> addons;
 
 	private String offer_id;
 
-	private Notes notes;
+	private LetsFameSubscriptionNote notes;
 
-	private subCustomerNotifyInfo notify_info;
+	private SubCustomerNotifyInfo notify_info;
 
 	private String status;
 

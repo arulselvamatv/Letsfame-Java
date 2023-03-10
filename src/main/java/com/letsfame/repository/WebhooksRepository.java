@@ -3,12 +3,9 @@ package com.letsfame.repository;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import com.letsfame.bean.Plans;
+import com.letsfame.bean.WebhookPaymentDetails;
 
 @Repository
-public interface PlanRequestReository extends MongoRepository<Plans, String> {
+public interface WebhooksRepository extends MongoRepository<WebhookPaymentDetails, Integer> {
 
 }
-
-
-
