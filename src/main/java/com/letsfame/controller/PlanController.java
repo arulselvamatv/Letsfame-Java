@@ -3,6 +3,8 @@ package com.letsfame.controller;
 import java.util.List;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,19 +12,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.letsfame.bean.LetsFamePlan;
-import com.letsfame.request.PaymentUpdateRequest;
+import com.letsfame.bean.Plan;
 import com.letsfame.request.PlanCreateRequest;
 import com.letsfame.response.Response;
 import com.letsfame.response.ResponseHandler;
 import com.letsfame.service.PlanService;
-import com.razorpay.Payment;
-import com.razorpay.Plan;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -30,66 +29,68 @@ import lombok.AllArgsConstructor;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @AllArgsConstructor(onConstructor_ = { @Autowired })
-@RequestMapping("/txn_api/v1.0/plan")
+@RequestMapping("/txn_api")
 public class PlanController {
 
 	@Autowired
 	private PlanService planservice;
 
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	@ApiOperation(value = "Create or Update plans Details", response = Response.class)
-	@PostMapping(produces = "application/json")
+	@PostMapping(value = "/v1.0/plan", produces = "application/json")
 	public ResponseEntity<?> createPlan(@RequestBody PlanCreateRequest req) throws Exception {
 
 		try {
 			Plan res = planservice.createPlan(req);
 
-			return ResponseHandler.successGetResponse("Created successfully.", res.toJson().toMap(), HttpStatus.OK);
+			return ResponseHandler.successGetResponse("Created successfully.", res, HttpStatus.OK);
 		} catch (Exception e) {
-			System.out.println("Error :: createPlan :: Exception :: " + ExceptionUtils.getStackTrace(e));
+			logger.error("Error :: createPlan :: Exception ::{} ", ExceptionUtils.getStackTrace(e));
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
 
 	@ApiOperation(value = "Allows to fetch Plan Details", response = Response.class)
-	@GetMapping(produces = "application/json")
-	public ResponseEntity<?> getAllPlans() throws Exception {
+	@GetMapping(value = "/v1.0/plan", produces = "application/json")
+	public ResponseEntity<?> findAllPlans() throws Exception {
 		try {
-			List<LetsFamePlan> res = planservice.getPlans();
+			List<Plan> res = planservice.getPlans();
 			return ResponseHandler.successGetResponse("Fetched successfully.", res, HttpStatus.OK);
 		} catch (Exception e) {
-			System.out.println("Error :: getAllPlans :: Exception :: " + ExceptionUtils.getStackTrace(e));
+			logger.error("Error :: findAllPlans :: Exception ::{} ", ExceptionUtils.getStackTrace(e));
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@ApiOperation(value = "Allows to fetch Plan Details", response = Response.class)
-	@GetMapping(value = "/{planId}", produces = "application/json")
-	public ResponseEntity<?> getPlanById(@PathVariable String planId) throws Exception {
+	@GetMapping(value = "/v1.0/{planId}", produces = "application/json")
+	public ResponseEntity<?> findByPlanId(@PathVariable String planId) throws Exception {
 
 		try {
-			LetsFamePlan res = planservice.getPlan(planId);
+			Plan res = planservice.getPlan(planId);
 
 			return ResponseHandler.successGetResponse("Fetched successfully.", res, HttpStatus.OK);
 
 		} catch (Exception e) {
-			System.out.println("Error :: getPlanById :: Exception :: " + ExceptionUtils.getStackTrace(e));
+			logger.error("Error :: findByPlanId :: Exception ::{} ", ExceptionUtils.getStackTrace(e));
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
 
 	@ApiOperation(value = "Update plan details", response = Response.class)
-	@PostMapping(value = "/Update", produces = "application/json")
+	@PutMapping(value = "/v1.0/plan", produces = "application/json")
 	public ResponseEntity<?> updatePlanDetails(@RequestBody PlanCreateRequest req) throws Exception {
 
 		try {
 			Plan res = planservice.updatePlanDetails(req);
 
-			return ResponseHandler.successGetResponse("Created successfully.", res.toJson().toMap(), HttpStatus.OK);
+			return ResponseHandler.successGetResponse("Created successfully.", res, HttpStatus.OK);
 
 		} catch (Exception e) {
-			System.out.println("Error :: updatePlanDetails :: Exception :: " + ExceptionUtils.getStackTrace(e));
+			logger.error("Error :: updatePlanDetails :: Exception ::{} ", ExceptionUtils.getStackTrace(e));
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

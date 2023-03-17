@@ -1,13 +1,10 @@
 package com.letsfame.service;
 
-import java.util.List;
-
-import com.letsfame.bean.WebhookPaymentDetails;
 import com.letsfame.response.Response;
+import com.letsfame.response.WebhookEventNotification;
 
 public interface WebhookService {
 
-	Response webhookpaymentNotification(WebhookPaymentDetails notification) throws Exception;
+	Response webhookpaymentNotification(WebhookEventNotification notification) throws Exception;
 
-	List<WebhookPaymentDetails> getWebhookNotification() throws Exception;
 }
