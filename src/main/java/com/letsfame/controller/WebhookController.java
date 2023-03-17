@@ -1,35 +1,35 @@
 package com.letsfame.controller;
 
-import java.util.List;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.letsfame.bean.WebhookPaymentDetails;
-import com.letsfame.dto.WebhookPaymentDetailsDto;
 import com.letsfame.response.Response;
 import com.letsfame.response.ResponseHandler;
+import com.letsfame.response.WebhookEventNotification;
 import com.letsfame.service.WebhookService;
 
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/txn_api/v1.0/webhook")
+@RequestMapping("/txn_api")
 public class WebhookController {
 
 	@Autowired
 	private WebhookService webhookService;
 
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	@ApiOperation(value = "Create or Update payment event details", response = Response.class)
-	@PostMapping(value = "/status", produces = "application/json")
-	public ResponseEntity<?> webhookPaymentNotifications(@RequestBody WebhookPaymentDetails notification)
+	@PostMapping(value = "/v1.0/webhook/Notification", produces = "application/json")
+	public ResponseEntity<?> webhookPaymentNotifications(@RequestBody WebhookEventNotification notification)
 			throws Exception {
 
 		try {
@@ -39,27 +39,10 @@ public class WebhookController {
 			return ResponseHandler.successGetResponse("Created successfully.", res.getData(), res.getHttpStatus());
 
 		} catch (Exception e) {
-			System.out
-					.println("Error :: webhookPaymentNotifications :: Exception :: " + ExceptionUtils.getStackTrace(e));
+			logger.error("Error :: webhookPaymentNotifications :: Exception ::{} ", ExceptionUtils.getStackTrace(e));
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
 
-	@GetMapping()
-	@ApiOperation(value = "Get Webhook details", response = Response.class)
-	public ResponseEntity<?> webhookAllPaymentNotifications() throws Exception {
-
-		try {
-
-			List<WebhookPaymentDetails> res = webhookService.getWebhookNotification();
-
-			return ResponseHandler.successGetResponse("Fetched successfully.", res, HttpStatus.OK);
-		} catch (Exception e) {
-			System.out.println(
-					"Error :: webhookAllPaymentNotifications :: Exception :: " + ExceptionUtils.getStackTrace(e));
-			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-
-	}
 }

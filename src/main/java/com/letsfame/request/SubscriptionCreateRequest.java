@@ -7,10 +7,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.letsfame.bean.LetsFameSubscriptionAddon;
+import com.letsfame.bean.SubscriptionAddon;
 import com.letsfame.bean.SubCustomerNotifyInfo;
-import com.letsfame.customJsonDeserializer.UnixTimestampDeserializer;
-import com.letsfame.customJsonDeserializer.UnixTimestampSerializer;
+import com.letsfame.custom.json.deserializer.UnixTimestampDeserializer;
+import com.letsfame.custom.json.deserializer.UnixTimestampSerializer;
 
 import lombok.Data;
 
@@ -46,7 +46,7 @@ public class SubscriptionCreateRequest {
 
 	private SubcriptionNoteCreateRequest notes;
 
-	private ArrayList<LetsFameSubscriptionAddon> addons;
+	private ArrayList<SubscriptionAddon> addons;
 
 	@JsonProperty("offer_id")
 	private String offerId;
