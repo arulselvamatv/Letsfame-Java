@@ -1,15 +1,15 @@
 package com.letsfame.service;
 
-import java.util.List;
-
-import com.letsfame.bean.Payments;
-import com.razorpay.Payment;
-import com.razorpay.RazorpayException;
+import com.letsfame.bean.Payment;
+import com.letsfame.dto.PaginationDto;
+import com.letsfame.request.PaymentUpdateRequest;
 
 public interface PaymentService {
 
-	Payment getPaymentDetails(Payments req) throws RazorpayException;
+	Payment updatePaymentDetails(PaymentUpdateRequest req) throws Exception;
 
-	List<Payments> getAllPaymentDetails();
+	PaginationDto findAllPayment(Integer pageNo, Integer pageSize, String sortBy) throws Exception;
+
+	Payment findByPaymentId(String paymentId) throws Exception;
 
 }

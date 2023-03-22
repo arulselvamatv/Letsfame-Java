@@ -3,13 +3,20 @@ package com.letsfame.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+
 @Configuration
-@EnableWebMvc
-public class AppConfig  {
+public class AppConfig {
 
 	@Value("${razorpay.key.id}")
 	private String keyId;
@@ -22,28 +29,16 @@ public class AppConfig  {
 
 	}
 
-//	@Override
-//	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//		final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-//		final ObjectMapper objectMapper = new ObjectMapper();
-//		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-//		//objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-//		converter.setObjectMapper(objectMapper);
-//		converters.add(converter);
-//		WebMvcConfigurer.super.configureMessageConverters(converters);
-//
-//	}
-//	@Bean
-//	public ObjectMapper objectMapper() {
-//		ObjectMapper objectMapper = new ObjectMapper();
-//		objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-//		return objectMapper;
-//	}
-//	@Bean
-//	@ConditionalOnMissingBean(AbstractJackson2HttpMessageConverter.class)
-//	public ObjectMapper getMapper() {
-//		ObjectMapper objectMapper = new ObjectMapper();
-//		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-//		return objectMapper;
-//	}
+	@Bean
+	public Docket productApi() {
+		return new Docket(DocumentationType.SWAGGER_2).select()
+				.apis(RequestHandlerSelectors.basePackage("com.letsfame")).paths(PathSelectors.any()).build()
+				.apiInfo(metaData());
+	}
+
+	private ApiInfo metaData() {
+		return new ApiInfoBuilder().title("").description("").version("1.0.0").license("Apache License Version 2.0")
+				.licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"").contact(new Contact("", "", "")).build();
+	}
+
 }

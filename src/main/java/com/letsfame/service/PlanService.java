@@ -1,22 +1,18 @@
 package com.letsfame.service;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.letsfame.bean.Plans;
-import com.razorpay.Plan;
-import com.razorpay.RazorpayException;
+import com.letsfame.bean.Plan;
+import com.letsfame.request.PlanCreateRequest;
 
 public interface PlanService {
 
-	Plan createPlan(Plans req) throws RazorpayException;
+	Plan createPlan(PlanCreateRequest req) throws Exception;
 
-	List<Plans> getPlans();
+	Plan updatePlanDetails(PlanCreateRequest req) throws Exception;
 
-	Optional<Plans> getPlan(String id);
+	List<Plan> getPlans() throws Exception;
 
-//	ResponseDto createPlanFeatures(PlanFeaturesReq req);
-//
-//	ResponseDto getPlanFeatures();
+	Plan getPlan(String planId) throws Exception;
 
 }

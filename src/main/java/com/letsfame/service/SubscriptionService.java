@@ -1,19 +1,27 @@
 package com.letsfame.service;
 
-import java.util.List;
-
-import com.letsfame.bean.Subscriptions;
-import com.razorpay.RazorpayException;
-import com.razorpay.Subscription;
+import com.letsfame.bean.Subscription;
+import com.letsfame.dto.PaginationDto;
+import com.letsfame.request.SubscriptionCreateRequest;
+import com.letsfame.request.SubscriptionUpgradeAndDowngradeRequest;
 
 public interface SubscriptionService {
 
-	Subscription createSubscription(Subscriptions req) throws RazorpayException;
-	
-	List<Subscriptions> getsubscriptions();
-	
-	Subscriptions findOne(String id);
-	
-	Subscriptions findBySubscriptionsId(String subscriptionsId);
-	
+	Subscription createSubscription(SubscriptionCreateRequest req) throws Exception;
+
+	PaginationDto findAllsubscriptions(Integer pageNo, Integer pageSize, String sortBy) throws Exception;
+
+	Subscription findOne(String id) throws Exception;
+
+	Subscription findBySubscriptionsId(String subscriptionsId) throws Exception;
+
+	Subscription cancelSubscription(String subscriptionsId) throws Exception;
+
+	Subscription pauseSubscription(String subscriptionsId) throws Exception;
+
+	Subscription resumeSubscription(String subscriptionsId) throws Exception;
+
+	Subscription subscriptionUpgradeandDowngrade(String subscriptionsId, SubscriptionUpgradeAndDowngradeRequest req)
+			throws Exception;
+
 }
