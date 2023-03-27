@@ -10,10 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.letsfame.bean.Plan;
 import com.letsfame.bean.PlanItem;
+import com.letsfame.bean.PlanNote;
 import com.letsfame.repository.PlanRepository;
 import com.letsfame.request.PlanCreateRequest;
 import com.letsfame.service.PlanService;
-
+import com.letsfame.util.DateUtils;
 import com.razorpay.RazorpayClient;
 
 @Service
@@ -69,11 +70,16 @@ public class PlanServiceImpl implements PlanService {
 	private Plan razorPayPlanToLetsFamePlan(com.razorpay.Plan plan) {
 		Plan savedData1 = new Plan();
 		PlanItem saveItem = new PlanItem();
+		PlanNote saveNote = new PlanNote();
 
 		JSONObject planJsonObject = plan.toJson();
 		savedData1.setPlanId(planJsonObject.getString("id"));
 		savedData1.setInterval(planJsonObject.getInt("interval"));
 		savedData1.setPeriod(planJsonObject.getString("period"));
+
+		if (!planJsonObject.isNull("createdAt")) {
+			savedData1.setCreatedAt(DateUtils.getRazorPayTimeStamp(planJsonObject.getInt("createdAt")));
+		}
 
 		JSONObject planItemJsonObject = plan.toJson().getJSONObject("item");
 
@@ -82,12 +88,24 @@ public class PlanServiceImpl implements PlanService {
 			saveItem.setName(planItemJsonObject.getString("name"));
 			saveItem.setAmount(planItemJsonObject.getInt("amount"));
 			saveItem.setCurrency(planItemJsonObject.getString("currency"));
+			if (!planJsonObject.isNull("createdAt")) {
+				saveItem.setCreatedAt(DateUtils.getRazorPayTimeStamp(planJsonObject.getInt("createdAt")));
+			}
+			if (!planJsonObject.isNull("updatedAt")) {
+				saveItem.setCreatedAt(DateUtils.getRazorPayTimeStamp(planJsonObject.getInt("updatedAt")));
+			}
 
 		}
-		savedData1.setItem(saveItem);
+		JSONObject planNoteJsonObject = plan.toJson().getJSONObject("notes");
 
+		for (int j = 0; j < planNoteJsonObject.length(); j++) {
+			saveNote.setNotesKey1(planNoteJsonObject.getString("notes_key_1"));
+			saveNote.setNotesKey2(planNoteJsonObject.getString("notes_key_2"));
+
+			savedData1.setItem(saveItem);
+			savedData1.setNotes(saveNote);
+		}
 		return savedData1;
-
 	}
 
 	@Override

@@ -10,5 +10,6 @@ public class DateUtils {
 			return null;
 		}
 		return new Date(TimeUnit.SECONDS.toMillis(Long.valueOf(value.toString())));
+
 	}
 }

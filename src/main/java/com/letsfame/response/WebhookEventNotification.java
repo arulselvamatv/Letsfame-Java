@@ -17,9 +17,6 @@ import lombok.ToString;
 @JsonIgnoreProperties(value = { "id", "subscriptionsId", "status" }, allowGetters = true)
 public class WebhookEventNotification implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5169798492733221331L;
 
 	private WebhookContext context;

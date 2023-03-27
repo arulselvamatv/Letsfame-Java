@@ -33,7 +33,7 @@ public class PlanController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@ApiOperation(value = "Create or Update plans Details", response = Response.class)
+	@ApiOperation(value = "Create plans", response = Response.class)
 	@PostMapping(value = "/v1.0/plan", produces = "application/json")
 	public ResponseEntity<?> createPlan(@RequestBody PlanCreateRequest req) throws Exception {
 
@@ -48,7 +48,7 @@ public class PlanController {
 
 	}
 
-	@ApiOperation(value = "Allows to fetch Plan Details", response = Response.class)
+	@ApiOperation(value = "Fetch The All Plan Details", response = Response.class)
 	@GetMapping(value = "/v1.0/plan", produces = "application/json")
 	public ResponseEntity<?> findAllPlans() throws Exception {
 		try {
@@ -60,7 +60,7 @@ public class PlanController {
 		}
 	}
 
-	@ApiOperation(value = "Allows to fetch Plan Details", response = Response.class)
+	@ApiOperation(value = "Fetch Plan Details By ID", response = Response.class)
 	@GetMapping(value = "/v1.0/{planId}", produces = "application/json")
 	public ResponseEntity<?> findByPlanId(@PathVariable String planId) throws Exception {
 
