@@ -36,7 +36,7 @@ public class WebhookController {
 
 			Response res = webhookService.webhookpaymentNotification(notification);
 
-			return ResponseHandler.successGetResponse("Created successfully.", res.getData(), res.getHttpStatus());
+			return ResponseHandler.successGetResponse("Data Recieved successfully.", res.getData(), res.getHttpStatus());
 
 		} catch (Exception e) {
 			logger.error("Error :: webhookPaymentNotifications :: Exception ::{} ", ExceptionUtils.getStackTrace(e));

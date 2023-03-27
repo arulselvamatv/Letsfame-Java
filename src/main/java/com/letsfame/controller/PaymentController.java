@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.letsfame.bean.Payment;
 import com.letsfame.dto.PaginationDto;
+import com.letsfame.request.IosPaymentUpdateRequest;
 import com.letsfame.request.PaymentUpdateRequest;
 import com.letsfame.response.Response;
 import com.letsfame.response.ResponseHandler;
@@ -32,7 +33,7 @@ public class PaymentController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@ApiOperation(value = "Get / Update payments details", response = Response.class)
+	@ApiOperation(value = "Update payments details", response = Response.class)
 	@PutMapping(value = "/v1.0/payments", produces = "application/json")
 	public ResponseEntity<?> updatepaymentDetails(@RequestBody PaymentUpdateRequest req) throws Exception {
 
@@ -43,6 +44,21 @@ public class PaymentController {
 
 		} catch (Exception e) {
 			logger.error("Error :: updatepaymentDetails :: Exception ::{} ", ExceptionUtils.getStackTrace(e));
+			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@ApiOperation(value = "Update IOS payments details", response = Response.class)
+	@PutMapping(value = "/v1.0/payments/IOS", produces = "application/json")
+	public ResponseEntity<?> iosUpdatePaymentDetails(@RequestBody IosPaymentUpdateRequest req) throws Exception {
+
+		try {
+			Payment res = paymentService.iosUpdatePaymentDetails(req);
+
+			return ResponseHandler.successGetResponse("Updated successfully.", res, HttpStatus.OK);
+
+		} catch (Exception e) {
+			logger.error("Error :: iosUpdatePaymentDetails :: Exception ::{} ", ExceptionUtils.getStackTrace(e));
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -66,8 +82,8 @@ public class PaymentController {
 	}
 
 	@GetMapping(path = "/v1.0/{paymentId}")
-	@ApiOperation(value = "Get payments details", response = Response.class)
-	public ResponseEntity<?> findByPaymentDetailsById(@PathVariable String paymentId) throws Exception {
+	@ApiOperation(value = "Get payments details By Id", response = Response.class)
+	public ResponseEntity<?> findPaymentDetailsById(@PathVariable String paymentId) throws Exception {
 
 		try {
 
@@ -77,7 +93,7 @@ public class PaymentController {
 
 			return ResponseHandler.successGetResponse("Fetched successfully.", res, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error :: findByPaymentDetailsById :: Exception :: " + ExceptionUtils.getStackTrace(e));
+			logger.error("Error :: findPaymentDetailsById :: Exception :: " + ExceptionUtils.getStackTrace(e));
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 

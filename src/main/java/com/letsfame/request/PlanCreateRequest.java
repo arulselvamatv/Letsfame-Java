@@ -12,11 +12,10 @@ public class PlanCreateRequest {
 	@JsonProperty("plan_id")
 	private String id;
 
-	@JsonProperty("period")
-	private String period;
-
 	@JsonProperty("interval")
 	private int interval;
+
+	private PlanPeriodCreateRequest period;
 
 	private PlanNoteCreateRequest notes;
 

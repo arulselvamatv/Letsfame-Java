@@ -15,6 +15,8 @@ public interface SubscriptionService {
 
 	Subscription findBySubscriptionsId(String subscriptionsId) throws Exception;
 
+	Subscription findSubscriptionByMemberId(String memberId) throws Exception;
+
 	Subscription cancelSubscription(String subscriptionsId) throws Exception;
 
 	Subscription pauseSubscription(String subscriptionsId) throws Exception;

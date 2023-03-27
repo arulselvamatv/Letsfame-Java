@@ -49,7 +49,7 @@ public class SubscriptionController {
 
 	}
 
-	@ApiOperation(value = "Allows to fetch subscriptions Details", response = Response.class)
+	@ApiOperation(value = "Get All subscriptions Details", response = Response.class)
 	@GetMapping(value = "/v1.0/subscription", produces = "application/json")
 	public ResponseEntity<?> findAllSubscriptions(@RequestParam(defaultValue = "0") Integer pageNumber,
 			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy)
@@ -66,7 +66,7 @@ public class SubscriptionController {
 
 	}
 
-	@ApiOperation(value = "Allows to fetch Plan Details", response = Response.class)
+	@ApiOperation(value = "Get Subscription Details By Id", response = Response.class)
 	@GetMapping(value = "/v1.0/{subscriptionsId}", produces = "application/json")
 	public ResponseEntity<?> findBySubscriptionId(@PathVariable String subscriptionsId) throws Exception {
 
@@ -83,7 +83,7 @@ public class SubscriptionController {
 	}
 
 	@ApiOperation(value = "Subscription Update", response = Response.class)
-	@PutMapping(value = "/{action}/{subscriptionsId}", produces = "application/json")
+	@PutMapping(value = "/v1.0/{subscriptionsId}/{action}", produces = "application/json")
 	public ResponseEntity<?> subscriptionUpdate(@PathVariable String action, @PathVariable String subscriptionsId)
 			throws Exception {
 
@@ -107,7 +107,7 @@ public class SubscriptionController {
 	}
 
 	@ApiOperation(value = "Subscription Upgrade And Downgrade", response = Response.class)
-	@PostMapping(value = "/update/{subscriptionsId}", produces = "application/json")
+	@PutMapping(value = "/v1.0/{subscriptionsId}", produces = "application/json")
 	public ResponseEntity<?> subscriptionUpgradeandDowngrade(@PathVariable String subscriptionsId,
 			@RequestBody SubscriptionUpgradeAndDowngradeRequest req) throws Exception {
 
@@ -119,6 +119,22 @@ public class SubscriptionController {
 		} catch (Exception e) {
 			logger.error("Error :: subscriptionUpgradeandDowngrade :: Exception ::{} ",
 					ExceptionUtils.getStackTrace(e));
+			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+
+	@ApiOperation(value = "To get subscription Details by Memeber Id", response = Response.class)
+	@GetMapping(value = "/v1.0/{memberId}", produces = "application/json")
+	public ResponseEntity<?> findSubscriptionByMemberId(@RequestParam String memberId) throws Exception {
+
+		try {
+			Subscription res = subscriptionService.findSubscriptionByMemberId(memberId);
+
+			return ResponseHandler.successGetResponse("Fetched successfully.", res, HttpStatus.OK);
+
+		} catch (Exception e) {
+			logger.error("Error :: findSubscriptionByMemberId :: Exception ::{} ", ExceptionUtils.getStackTrace(e));
 			return ResponseHandler.errorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 

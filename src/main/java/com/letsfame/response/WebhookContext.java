@@ -10,6 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class WebhookContext {
+
 	private String id;
 	private Date ts;
 	private Object pipelineId;

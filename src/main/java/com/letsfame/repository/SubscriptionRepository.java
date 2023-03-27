@@ -10,4 +10,5 @@ public interface SubscriptionRepository extends MongoRepository<Subscription, St
 
 	Subscription findBySubscriptionsId(String subscriptionsId);
 
+	Subscription findByMemberId(String memberId);
 }
