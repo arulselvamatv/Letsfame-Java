@@ -1,11 +1,13 @@
 package com.letsfame.request;
 
+import com.letsfame.bean.types.PlanItemName;
+
 import lombok.Data;
 
 @Data
 public class PlanItemCreateRequest {
 
-	private PlanItemNameRequest name;
+	private PlanItemName name;
 
 	private Double amount;
 

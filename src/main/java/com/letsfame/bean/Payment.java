@@ -27,6 +27,7 @@ public class Payment implements Serializable {
 	private String id;
 
 	private String paymentId;
+	private String transactionId;
 	private Double amount;
 	private String currency;
 	private String method;

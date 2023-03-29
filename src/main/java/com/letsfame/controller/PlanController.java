@@ -61,8 +61,8 @@ public class PlanController {
 	}
 
 	@ApiOperation(value = "Fetch Plan Details By ID", response = Response.class)
-	@GetMapping(value = "/v1.0/{planId}", produces = "application/json")
-	public ResponseEntity<?> findByPlanId(@PathVariable String planId) throws Exception {
+	@GetMapping(value = "/v1.0/{plan_id}", produces = "application/json")
+	public ResponseEntity<?> findByPlanId(@PathVariable(name = "plan_id") String planId) throws Exception {
 
 		try {
 			Plan res = planservice.getPlan(planId);

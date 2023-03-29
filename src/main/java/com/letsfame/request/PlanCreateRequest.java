@@ -2,6 +2,8 @@ package com.letsfame.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.letsfame.bean.PlanNote;
+import com.letsfame.bean.types.PlanPeriodName;
 
 import lombok.Data;
 
@@ -15,9 +17,9 @@ public class PlanCreateRequest {
 	@JsonProperty("interval")
 	private int interval;
 
-	private PlanPeriodCreateRequest period;
+	private PlanPeriodName period;
 
-	private PlanNoteCreateRequest notes;
+	private PlanNote notes;
 
 	private PlanItemCreateRequest item;
 
