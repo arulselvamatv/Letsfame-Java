@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.letsfame.bean.Payment;
 import com.letsfame.dto.PaginationDto;
 import com.letsfame.repository.PaymentRepository;
+import com.letsfame.request.IosPaymentUpdateRequest;
 import com.letsfame.request.PaymentUpdateRequest;
 import com.letsfame.service.PaymentService;
 import com.letsfame.util.DateUtils;
@@ -41,6 +42,36 @@ public class PaymentServiceImpl implements PaymentService {
 			if (savedById != null) {
 				responseData.setId(savedById.getId());
 			}
+			paymentRepository.save(responseData);
+		}
+
+		return responseData;
+	}
+
+	@Override
+	public Payment iosUpdatePaymentDetails(IosPaymentUpdateRequest req) throws Exception {
+
+		Payment responseData = new Payment();
+
+		if (req != null) {
+
+			Payment savedById = findByPaymentId(req.getPaymentId());
+
+			System.out.println("savedById:::" + savedById);
+			if (savedById != null) {
+				responseData.setId(savedById.getId());
+			}
+
+			responseData.setPaymentId(req.getPaymentId());
+			responseData.setMemberId(req.getMemberId());
+			responseData.setPlanId(req.getPlanId());
+			responseData.setMonthCount(req.getMonthCount());
+			responseData.setAmount(req.getAmount());
+			responseData.setPayment(req.getPayment());
+			responseData.setCreatedAt(req.getPlanCreatedDate());
+			responseData.setExpireBy(req.getExpireBy());
+			responseData.setPurchasedDevice(req.getPurchasedDevice());
+			responseData.setRecurring(req.getRecurring());
 			paymentRepository.save(responseData);
 		}
 

@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class PlanItemCreateRequest {
 
-	private String name;
+	private PlanItemNameRequest name;
 
-	private int amount;
+	private Double amount;
 
 	private String currency;
 

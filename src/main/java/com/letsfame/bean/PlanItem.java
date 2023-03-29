@@ -1,9 +1,15 @@
 package com.letsfame.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.letsfame.custom.json.deserializer.UnixTimestampDeserializer;
+import com.letsfame.custom.json.deserializer.UnixTimestampSerializer;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +31,10 @@ public class PlanItem implements Serializable {
 	private String currency;
 	private String description;
 	private String planId;
-	private Integer createdAt;
-	private Integer updatedAt;
+	@JsonDeserialize(using = UnixTimestampDeserializer.class)
+	@JsonSerialize(using = UnixTimestampSerializer.class)
+	private Date createdAt;
+	@JsonDeserialize(using = UnixTimestampDeserializer.class)
+	@JsonSerialize(using = UnixTimestampSerializer.class)
+	private Date updatedAt;
 }

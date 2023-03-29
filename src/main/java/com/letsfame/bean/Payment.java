@@ -45,6 +45,10 @@ public class Payment implements Serializable {
 	@JsonDeserialize(using = UnixTimestampDeserializer.class)
 	@JsonSerialize(using = UnixTimestampSerializer.class)
 	private Date createdAt;
+	
+	@JsonDeserialize(using = UnixTimestampDeserializer.class)
+	@JsonSerialize(using = UnixTimestampSerializer.class)
+	private Date expireBy;
 
 	private Double amount_refunded;
 	private String cardId;
@@ -52,4 +56,10 @@ public class Payment implements Serializable {
 	private String vpa;
 	private String tokenId;
 
+	private String memberId;
+	private String planId;
+	private Integer monthCount;
+	private boolean payment;
+	private String purchasedDevice;
+	private boolean recurring;
 }

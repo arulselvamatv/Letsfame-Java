@@ -63,7 +63,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 //		savedData1.setMemberId(req.getMemberId());
 		savedData1.setPlanId(subscriptionJsonObject.getString("plan_id"));
 		savedData1.setTotal_count(subscriptionJsonObject.getInt("total_count"));
-		savedData1.setQuantity(subscriptionJsonObject.getInt("total_count"));
+		savedData1.setQuantity(subscriptionJsonObject.getInt("quantity"));
 
 		if (!subscriptionJsonObject.isNull("start_at")) {
 			savedData1.setStart_at(DateUtils.getRazorPayTimeStamp(subscriptionJsonObject.getInt("start_at")));
@@ -127,6 +127,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	@Override
 	public Subscription findBySubscriptionsId(String subscriptionsId) throws Exception {
 		return subscriptionRequestRepository.findBySubscriptionsId(subscriptionsId);
+	}
+
+	@Override
+	public Subscription findSubscriptionByMemberId(String memberId) throws Exception {
+		return subscriptionRequestRepository.findByMemberId(memberId);
 	}
 
 	@Override

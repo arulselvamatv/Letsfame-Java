@@ -1,12 +1,5 @@
 package com.letsfame.response;
 
-import java.util.Date;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.letsfame.custom.json.deserializer.UnixTimestampDeserializer;
-import com.letsfame.custom.json.deserializer.UnixTimestampSerializer;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,17 +9,14 @@ import lombok.ToString;
 @ToString
 public class MemberPaymentUpdateRequest {
 
-	private String razorCustomerId;
-	private String subscriptionId;
-	private String paymentId;
-	private String paymentFrequency;
+	private String razor_customer_id;
+	private String member_subscription_id;
+	private String payment_id;
+	private String payment_frequency;
+	private String subscription_package;
 
-	@JsonDeserialize(using = UnixTimestampDeserializer.class)
-	@JsonSerialize(using = UnixTimestampSerializer.class)
-	private Date subscribedAt;
+	private String subscribed_at;
 
-	@JsonDeserialize(using = UnixTimestampDeserializer.class)
-	@JsonSerialize(using = UnixTimestampSerializer.class)
-	private Date expiredAt;
+	private String expired_at;
 
 }
