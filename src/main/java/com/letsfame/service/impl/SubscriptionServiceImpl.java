@@ -14,7 +14,7 @@ import com.letsfame.bean.SubscriptionNote;
 import com.letsfame.dto.PaginationDto;
 import com.letsfame.repository.SubscriptionRepository;
 import com.letsfame.request.SubscriptionCreateRequest;
-import com.letsfame.request.SubscriptionUpgradeAndDowngradeRequest;
+import com.letsfame.request.SubscriptionUpdateRequest;
 import com.letsfame.service.SubscriptionService;
 import com.letsfame.util.DateUtils;
 import com.razorpay.RazorpayClient;
@@ -149,11 +149,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 		Subscription savedData = findBySubscriptionsId(subscriptionsId);
 
-		System.out.println("cancelledData ::" + savedData);
-
 		cancelledData.setId(savedData.getId());
-
-		System.out.println("cancelledData ::" + cancelledData);
 
 		subscriptionRequestRepository.save(cancelledData);
 
@@ -176,11 +172,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 		Subscription savedData = findBySubscriptionsId(subscriptionsId);
 
-		System.out.println("cancelledData ::" + savedData);
-
 		pausedData.setId(savedData.getId());
-
-		System.out.println("cancelledData ::" + pausedData);
 
 		subscriptionRequestRepository.save(pausedData);
 
@@ -203,11 +195,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 		Subscription savedData = findBySubscriptionsId(subscriptionsId);
 
-		System.out.println("cancelledData ::" + savedData);
-
 		resumedData.setId(savedData.getId());
-
-		System.out.println("resumedData ::" + resumedData);
 
 		subscriptionRequestRepository.save(resumedData);
 
@@ -216,10 +204,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	}
 
 	@Override
-	public Subscription subscriptionUpgradeandDowngrade(String subscriptionsId,
-			SubscriptionUpgradeAndDowngradeRequest req) throws Exception {
+	public Subscription subscriptionUpgradeandDowngrade(String subscriptionsId, SubscriptionUpdateRequest req)
+			throws Exception {
 
-		SubscriptionUpgradeAndDowngradeRequest upgradeOrDowngradeData = new SubscriptionUpgradeAndDowngradeRequest();
+		SubscriptionUpdateRequest upgradeOrDowngradeData = new SubscriptionUpdateRequest();
 
 		Subscription subscriptionUpgradeorDowngrade = new Subscription();
 
@@ -231,11 +219,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 		Subscription savedData = findBySubscriptionsId(subscriptionsId);
 
-		System.out.println("Subscription DB Data ::" + savedData);
-
 		subscriptionUpgradeorDowngrade.setId(savedData.getId());
-
-		System.out.println("subscriptionUpgradeorDowngrade ::" + subscriptionUpgradeorDowngrade);
 
 		subscriptionRequestRepository.save(subscriptionUpgradeorDowngrade);
 

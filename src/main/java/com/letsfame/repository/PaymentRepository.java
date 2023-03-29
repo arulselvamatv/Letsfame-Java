@@ -8,4 +8,6 @@ import com.letsfame.bean.Payment;
 @Repository
 public interface PaymentRepository extends MongoRepository<Payment, String> {
 	Payment findByPaymentId(String paymentId);
+
+	Payment findByTransactionId(String transactionId);
 }

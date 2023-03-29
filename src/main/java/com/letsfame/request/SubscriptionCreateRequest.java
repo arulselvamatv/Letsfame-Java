@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.letsfame.bean.SubCustomerNotifyInfo;
 import com.letsfame.bean.SubscriptionAddon;
+import com.letsfame.bean.SubscriptionNote;
 import com.letsfame.custom.json.deserializer.UnixTimestampDeserializer;
 import com.letsfame.custom.json.deserializer.UnixTimestampSerializer;
 
@@ -43,14 +45,14 @@ public class SubscriptionCreateRequest {
 	@JsonProperty("customer_notify")
 	private Boolean customerNotify;
 
-	private SubcriptionNoteCreateRequest notes;
+	private SubscriptionNote notes;
 
 	private ArrayList<SubscriptionAddon> addons;
 
 	@JsonProperty("offer_id")
 	private String offerId;
 
-	private SubscriptionCustomerInfoRequest subscriptionInfo;
+	private SubCustomerNotifyInfo subscriptionInfo;
 
 	@JsonProperty("status")
 	private String status;

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class SubscriptionUpgradeAndDowngradeRequest {
+public class SubscriptionUpdateRequest {
 
 	@JsonProperty("plan_id")
 	private String planId;

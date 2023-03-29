@@ -3,6 +3,8 @@ package com.letsfame.service.impl;
 import java.util.List;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,8 @@ public class PlanServiceImpl implements PlanService {
 
 	@Autowired
 	private RazorpayClient razorpayClient;
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -51,7 +55,7 @@ public class PlanServiceImpl implements PlanService {
 
 		Plan planUpdateData = new Plan();
 
-		System.out.println("here  ::" + req);
+		logger.info("here:::{}", req);
 
 		JSONObject jsonObject = new JSONObject(objectMapper.writeValueAsString(req));
 
