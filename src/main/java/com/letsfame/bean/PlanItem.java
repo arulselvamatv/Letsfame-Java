@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -18,7 +17,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Document(collection = "Item")
 public class PlanItem implements Serializable {
 
 	private static final long serialVersionUID = 1508992171465029322L;
@@ -31,6 +29,7 @@ public class PlanItem implements Serializable {
 	private String currency;
 	private String description;
 	private String planId;
+
 	@JsonDeserialize(using = UnixTimestampDeserializer.class)
 	@JsonSerialize(using = UnixTimestampSerializer.class)
 	private Date createdAt;

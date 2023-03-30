@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -41,6 +43,9 @@ public class WebhookServiceImpl implements WebhookService {
 	private String password;
 	@Value("${com.letsfame.serviceImpl.WebhookServiceImpl.url}")
 	private String url;
+	@Value("${com.letsfame.serviceImpl.WebhookServiceImpl.myProp}")
+	private String value;
+
 	@Autowired
 	private RazorpayClient razorpayClient;
 
@@ -52,6 +57,8 @@ public class WebhookServiceImpl implements WebhookService {
 
 	@Autowired
 	private PaymentRepository paymentRepository;
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	RestTemplate restTemplate = new RestTemplate();
 
@@ -65,28 +72,22 @@ public class WebhookServiceImpl implements WebhookService {
 
 		MemberPaymentUpdateRequest paymentstatus = new MemberPaymentUpdateRequest();
 
-		System.out.println("webhook ::" + notification);
-
-		
 		// To get invoice details for find subscription ID
 		Invoice invoice = razorpayClient.invoices
 				.fetch(notification.getEvent().getPayload().getPayment().getEntity().getInvoice_id());
 
-		System.out.println("invoice_details::" + invoice);
+		logger.info("invoice_details:::{}", invoice);
 
-		System.out.println("invoice_SubscriptionId::" + invoice.get("subscription_id"));
 		notification.setSubscriptionId(invoice.get("subscription_id"));
-		
 
 		Payment findByPayment = paymentService
 				.findByPaymentId(notification.getEvent().getPayload().getPayment().getEntity().getPaymentId());
-		System.out.println("findByPayment ::" + findByPayment);
 
 		// To save process of payments status if new payment
 
 		if (findByPayment == null) {
-			System.out.println("Payments status updated Sucessfully ::" + findByPayment);
 
+			logger.info("Payments status updated Sucessfully:::{}", findByPayment);
 			com.razorpay.Payment payment = razorpayClient.payments
 					.fetch(notification.getEvent().getPayload().getPayment().getEntity().getPaymentId());
 
@@ -103,19 +104,15 @@ public class WebhookServiceImpl implements WebhookService {
 
 		paymentstatus.setPayment_id(notification.getEvent().getPayload().getPayment().getEntity().getPaymentId());
 
-		
 		// To get Member ID
 		Subscription subscription = subscriptionService.findBySubscriptionsId(notification.getSubscriptionId());
-		System.out.println("subscriptionID::" + subscription);
+
 		String memberId = subscription.getMemberId();
-		
 
 		// To get Subscription Details for Subscription start Date & Expired Date
 
 		com.razorpay.Subscription updatedSubscription = razorpayClient.subscriptions
 				.fetch(notification.getSubscriptionId());
-
-		System.out.println("updateSubscription::" + updatedSubscription);
 
 		Date expire = DateUtils.getRazorPayTimeStamp(updatedSubscription.get("current_end"));
 		Date created = DateUtils.getRazorPayTimeStamp(updatedSubscription.get("current_start"));
@@ -125,25 +122,21 @@ public class WebhookServiceImpl implements WebhookService {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(LocalDate);
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-		String ExpireDate = dateFormat.format(expire);
-		String SubcribeAtDate = dateFormat.format(created);
+		String expireDate = dateFormat.format(expire);
+		String subcribeAtDate = dateFormat.format(created);
 
-		paymentstatus.setExpired_at(ExpireDate);
-		paymentstatus.setSubscribed_at(SubcribeAtDate);
+		paymentstatus.setExpired_at(expireDate);
+		paymentstatus.setSubscribed_at(subcribeAtDate);
 
-
-		
 		// To get Plan Details for get plan name and plan frequency
 
 		com.razorpay.Plan getPlanDetails = razorpayClient.plans.fetch(updatedSubscription.get("plan_id"));
 
-		System.out.println("planDetails::" + getPlanDetails);
-
 		JSONObject item = getPlanDetails.get("item");
 
-		paymentstatus.setSubscription_package(item.getString("name"));;
+		paymentstatus.setSubscription_package(item.getString("name"));
+		;
 		paymentstatus.setPayment_frequency(getPlanDetails.get("period"));
-		
 
 		// Member API Connecting
 
@@ -153,12 +146,11 @@ public class WebhookServiceImpl implements WebhookService {
 
 		HttpEntity<MemberPaymentUpdateRequest> entity = new HttpEntity<MemberPaymentUpdateRequest>(paymentstatus,
 				headers);
-		String fullUrl = url + "/api/v1.0/member/" + memberId + "/memberSubscription";
-		System.out.println("Full URL::" + fullUrl);
+
+		String fullUrl = url + memberId + value;
+		logger.info("fullUrl:::{}", fullUrl);
 
 		ResponseEntity<String> res = restTemplate.exchange(fullUrl, HttpMethod.PUT, entity, String.class);
-
-		System.out.println("res:::" + res);
 
 		response.setData(new JSONObject(res.getBody()).toMap());
 		response.setHttpStatus(HttpStatus.OK);
@@ -172,8 +164,6 @@ public class WebhookServiceImpl implements WebhookService {
 		Payment paymentData = new Payment();
 
 		JSONObject paymentJsonObject = payment.toJson();
-
-		System.out.println("payment:::" + paymentJsonObject);
 
 		paymentData.setPaymentId(paymentJsonObject.getString("id"));
 		paymentData.setEntity(paymentJsonObject.getString("entity"));

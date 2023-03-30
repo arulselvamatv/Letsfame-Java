@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.letsfame.bean.Subscription;
 import com.letsfame.dto.PaginationDto;
 import com.letsfame.request.SubscriptionCreateRequest;
-import com.letsfame.request.SubscriptionUpgradeAndDowngradeRequest;
+import com.letsfame.request.SubscriptionUpdateRequest;
 import com.letsfame.response.Response;
 import com.letsfame.response.ResponseHandler;
 import com.letsfame.service.SubscriptionService;
@@ -67,8 +67,9 @@ public class SubscriptionController {
 	}
 
 	@ApiOperation(value = "Get Subscription Details By Id", response = Response.class)
-	@GetMapping(value = "/v1.0/{subscriptionsId}", produces = "application/json")
-	public ResponseEntity<?> findBySubscriptionId(@PathVariable String subscriptionsId) throws Exception {
+	@GetMapping(value = "/v1.0/{subscription_id}", produces = "application/json")
+	public ResponseEntity<?> findBySubscriptionId(@PathVariable(name = "subscription_id") String subscriptionsId)
+			throws Exception {
 
 		try {
 			Subscription res = subscriptionService.findBySubscriptionsId(subscriptionsId);
@@ -83,9 +84,9 @@ public class SubscriptionController {
 	}
 
 	@ApiOperation(value = "Subscription Update", response = Response.class)
-	@PutMapping(value = "/v1.0/{subscriptionsId}/{action}", produces = "application/json")
-	public ResponseEntity<?> subscriptionUpdate(@PathVariable String action, @PathVariable String subscriptionsId)
-			throws Exception {
+	@PutMapping(value = "/v1.0/{subscription_id}/{action}", produces = "application/json")
+	public ResponseEntity<?> subscriptionUpdate(@PathVariable String action,
+			@PathVariable(name = "subscription_id") String subscriptionsId) throws Exception {
 
 		try {
 			Subscription res = null;
@@ -106,10 +107,11 @@ public class SubscriptionController {
 
 	}
 
-	@ApiOperation(value = "Subscription Upgrade And Downgrade", response = Response.class)
-	@PutMapping(value = "/v1.0/{subscriptionsId}", produces = "application/json")
-	public ResponseEntity<?> subscriptionUpgradeandDowngrade(@PathVariable String subscriptionsId,
-			@RequestBody SubscriptionUpgradeAndDowngradeRequest req) throws Exception {
+	@ApiOperation(value = "Subscription Update", response = Response.class)
+	@PutMapping(value = "/v1.0/{subscription_id}", produces = "application/json")
+	public ResponseEntity<?> subscriptionUpgradeandDowngrade(
+			@PathVariable(name = "subscription_id") String subscriptionsId, @RequestBody SubscriptionUpdateRequest req)
+			throws Exception {
 
 		try {
 			Subscription res = subscriptionService.subscriptionUpgradeandDowngrade(subscriptionsId, req);
@@ -125,8 +127,9 @@ public class SubscriptionController {
 	}
 
 	@ApiOperation(value = "To get subscription Details by Memeber Id", response = Response.class)
-	@GetMapping(value = "/v1.0/{memberId}", produces = "application/json")
-	public ResponseEntity<?> findSubscriptionByMemberId(@RequestParam String memberId) throws Exception {
+	@GetMapping(value = "/v1.0/{member_id}", produces = "application/json")
+	public ResponseEntity<?> findSubscriptionByMemberId(@RequestParam(name = "member_id") String memberId)
+			throws Exception {
 
 		try {
 			Subscription res = subscriptionService.findSubscriptionByMemberId(memberId);

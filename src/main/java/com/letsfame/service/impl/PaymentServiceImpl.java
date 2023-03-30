@@ -1,6 +1,8 @@
 package com.letsfame.service.impl;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.letsfame.bean.Payment;
 import com.letsfame.dto.PaginationDto;
 import com.letsfame.repository.PaymentRepository;
-import com.letsfame.request.IosPaymentUpdateRequest;
 import com.letsfame.request.PaymentUpdateRequest;
 import com.letsfame.service.PaymentService;
 import com.letsfame.util.DateUtils;
@@ -27,55 +28,54 @@ public class PaymentServiceImpl implements PaymentService {
 	@Autowired
 	private RazorpayClient razorpayClient;
 
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	@Override
 	public Payment updatePaymentDetails(PaymentUpdateRequest req) throws Exception {
 
-		Payment responseData = new Payment();
-		com.razorpay.Payment payment = razorpayClient.payments.fetch(req.getPaymentId());
+		Payment responseDataAndroid = new Payment();
+		Payment responseDataIOS = new Payment();
 
-		if (payment != null) {
-			responseData = razorPayPaymentToLetsFamePayment(payment);
+		if ((req.getPaymentId() != null) && (req.getTransactionId() == null)) {
+			com.razorpay.Payment payment = razorpayClient.payments.fetch(req.getPaymentId());
 
-			Payment savedById = findByPaymentId(req.getPaymentId());
+			if (payment != null) {
+				responseDataAndroid = razorPayPaymentToLetsFamePayment(payment);
 
-			System.out.println("savedById:::" + savedById);
-			if (savedById != null) {
-				responseData.setId(savedById.getId());
+				Payment savedById = findByPaymentId(req.getPaymentId());
+
+				logger.info("savedById:::{}", savedById);
+
+				if (savedById != null) {
+					responseDataAndroid.setId(savedById.getId());
+				}
+				paymentRepository.save(responseDataAndroid);
 			}
-			paymentRepository.save(responseData);
+			return responseDataAndroid;
 		}
 
-		return responseData;
-	}
+		if ((req.getTransactionId() != null) && (req.getPaymentId() == null)) {
 
-	@Override
-	public Payment iosUpdatePaymentDetails(IosPaymentUpdateRequest req) throws Exception {
+			Payment savedByIdIOS = paymentRepository.findByTransactionId(req.getTransactionId());
 
-		Payment responseData = new Payment();
-
-		if (req != null) {
-
-			Payment savedById = findByPaymentId(req.getPaymentId());
-
-			System.out.println("savedById:::" + savedById);
-			if (savedById != null) {
-				responseData.setId(savedById.getId());
+			logger.info("savedByIdIOS:::{}", savedByIdIOS);
+			if (savedByIdIOS != null) {
+				responseDataIOS.setId(savedByIdIOS.getId());
 			}
 
-			responseData.setPaymentId(req.getPaymentId());
-			responseData.setMemberId(req.getMemberId());
-			responseData.setPlanId(req.getPlanId());
-			responseData.setMonthCount(req.getMonthCount());
-			responseData.setAmount(req.getAmount());
-			responseData.setPayment(req.getPayment());
-			responseData.setCreatedAt(req.getPlanCreatedDate());
-			responseData.setExpireBy(req.getExpireBy());
-			responseData.setPurchasedDevice(req.getPurchasedDevice());
-			responseData.setRecurring(req.getRecurring());
-			paymentRepository.save(responseData);
+			responseDataIOS.setTransactionId(req.getTransactionId());
+			responseDataIOS.setMemberId(req.getMemberId());
+			responseDataIOS.setPlanId(req.getPlanId());
+			responseDataIOS.setMonthCount(req.getMonthCount());
+			responseDataIOS.setAmount(req.getAmount());
+			responseDataIOS.setPayment(req.getPayment());
+			responseDataIOS.setCreatedAt(req.getPlanCreatedDate());
+			responseDataIOS.setExpireBy(req.getExpireBy());
+			responseDataIOS.setPurchasedDevice(req.getPurchasedDevice());
+			responseDataIOS.setRecurring(req.getRecurring());
+			paymentRepository.save(responseDataIOS);
 		}
-
-		return responseData;
+		return responseDataIOS;
 	}
 
 	private Payment razorPayPaymentToLetsFamePayment(com.razorpay.Payment payment) {
@@ -84,7 +84,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 		JSONObject paymentJsonObject = payment.toJson();
 
-		System.out.println("payment:::" + paymentJsonObject);
+		logger.info("payment:::{}", paymentJsonObject);
 
 		paymentData.setPaymentId(paymentJsonObject.getString("id"));
 		paymentData.setEntity(paymentJsonObject.getString("entity"));

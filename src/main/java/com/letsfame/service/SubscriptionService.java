@@ -3,7 +3,7 @@ package com.letsfame.service;
 import com.letsfame.bean.Subscription;
 import com.letsfame.dto.PaginationDto;
 import com.letsfame.request.SubscriptionCreateRequest;
-import com.letsfame.request.SubscriptionUpgradeAndDowngradeRequest;
+import com.letsfame.request.SubscriptionUpdateRequest;
 
 public interface SubscriptionService {
 
@@ -23,7 +23,7 @@ public interface SubscriptionService {
 
 	Subscription resumeSubscription(String subscriptionsId) throws Exception;
 
-	Subscription subscriptionUpgradeandDowngrade(String subscriptionsId, SubscriptionUpgradeAndDowngradeRequest req)
+	Subscription subscriptionUpgradeandDowngrade(String subscriptionsId, SubscriptionUpdateRequest req)
 			throws Exception;
 
 }
