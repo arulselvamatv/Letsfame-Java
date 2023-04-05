@@ -88,11 +88,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 			savedData1.setCharge_at(DateUtils.getRazorPayTimeStamp(subscriptionJsonObject.getInt("charge_at")));
 		}
 
+		
 		JSONObject subscriptionNotesJsonObject = subscription.toJson().getJSONObject("notes");
 
 		for (int i = 0; i < subscriptionNotesJsonObject.length(); i++) {
-			saveNotes.setNotesKey1(subscriptionNotesJsonObject.getString("notes_key_1"));
-			saveNotes.setNotesKey2(subscriptionNotesJsonObject.getString("notes_key_2"));
+			saveNotes.setNotesKey1(subscriptionNotesJsonObject.getString("notesKey1"));
+			saveNotes.setNotesKey2(subscriptionNotesJsonObject.getString("notesKey2"));
 
 		}
 		savedData1.setNotes(saveNotes);
