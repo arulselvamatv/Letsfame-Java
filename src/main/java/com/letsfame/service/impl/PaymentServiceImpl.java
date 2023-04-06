@@ -145,6 +145,11 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Override
 	public Payment findByPaymentId(String paymentId) throws Exception {
-		return paymentRepository.findByPaymentId(paymentId);
+		Payment payment = new Payment();
+		payment = paymentRepository.findByPaymentId(paymentId);
+		if (payment == null) {
+			payment = paymentRepository.findByTransactionId(paymentId);
+		}
+		return payment;
 	}
 }
